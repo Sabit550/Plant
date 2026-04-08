@@ -1,106 +1,132 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#2E7D32">
-    <title>গাছের ডাক্তার - Plant Doctor</title>
+    <meta name="theme-color" content="#1B5E20">
+    <title>গাছের ডাক্তার | Plant Doctor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
-        
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --primary-container: #B8F0B9;
+            --on-primary: #FFFFFF;
+            --secondary: #526350;
+            --secondary-container: #D5E8CF;
+            --surface: #F7FBF2;
+            --surface-variant: #DEE5D9;
+            --background: #F7FBF2;
+            --text: #1A1C19;
+            --text-secondary: #42493F;
+            --outline: #72796F;
+            --error: #BA1A1A;
+            --error-container: #FFDAD6;
+            --warning: #F57C00;
+            --info: #0288D1;
+            
+            --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
+            --elevation-3: 0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10);
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 28px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #4ADE80;
+            --primary-dark: #22C55E;
+            --primary-light: #86EFAC;
+            --primary-container: #005223;
+            --on-primary: #00390F;
+            --secondary: #B9CCB3;
+            --secondary-container: #3B4B39;
+            --surface: #121412;
+            --surface-variant: #2C302A;
+            --background: #121412;
+            --text: #E0E4DC;
+            --text-secondary: #C3C9BC;
+            --outline: #8C9388;
+            --error: #FFB4AB;
+            --error-container: #93000A;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Noto Sans Bengali', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', 'Noto Sans Bengali', system-ui, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        
-        :root {
-            --primary: #2E7D32;
-            --primary-light: #4CAF50;
-            --primary-dark: #1B5E20;
-            --secondary: #FF8F00;
-            --secondary-light: #FFB74D;
-            --bg: #F1F8E9;
-            --surface: #FFFFFF;
-            --text: #1B1B1B;
-            --text-secondary: #616161;
-            --border: #E0E0E0;
-            --error: #D32F2F;
-            --success: #388E3C;
-            --warning: #F57C00;
-            --info: #1976D2;
-        }
-        
-        [data-theme="dark"] {
-            --bg: #121212;
-            --surface: #1E1E1E;
-            --text: #E0E0E0;
-            --text-secondary: #9E9E9E;
-            --border: #333333;
-        }
-        
+
         body {
-            background: var(--bg);
+            background: var(--background);
             color: var(--text);
             min-height: 100vh;
-            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
-        
+
         .app-container {
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
-            background: var(--bg);
             position: relative;
             padding-bottom: 90px;
         }
 
-        /* Header - Clean without Dev Info */
+        /* Header & Weather Widget */
         .header {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             color: white;
-            padding: 24px 20px;
+            padding: 20px;
             border-radius: 0 0 32px 32px;
-            box-shadow: 0 4px 20px rgba(46,125,50,0.3);
-            margin-bottom: 20px;
+            box-shadow: var(--elevation-2);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
         }
-        
+
         .logo {
             font-size: 26px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            letter-spacing: -0.5px;
         }
-        
-        .logo-icon {
-            font-size: 36px;
-            background: rgba(255,255,255,0.2);
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-        
+
         .header-actions {
             display: flex;
             gap: 8px;
         }
-        
+
         .icon-btn {
             background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
             border: none;
             color: white;
             width: 44px;
@@ -112,71 +138,92 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
-            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
-        
+
         .icon-btn:hover {
             background: rgba(255,255,255,0.25);
             transform: translateY(-2px);
         }
-        
-        .subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-top: 4px;
-            font-weight: 400;
-        }
 
-        /* Weather Bar - Compact */
-        .weather-bar {
-            background: linear-gradient(135deg, #FF8F00 0%, #F57C00 100%);
-            margin: 0 20px 20px;
-            padding: 16px 20px;
+        .weather-widget {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            color: white;
+            padding: 16px;
+            margin-top: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 16px rgba(255,143,0,0.3);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
-        
-        .weather-info h3 {
-            font-size: 12px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
+
+        .weather-widget:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.2);
         }
-        
-        .weather-temp {
-            font-size: 32px;
-            font-weight: 700;
+
+        .weather-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        
-        .weather-desc {
-            font-size: 13px;
-            opacity: 0.95;
-        }
-        
+
         .weather-icon {
             font-size: 40px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .weather-info h3 {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .weather-temp {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .weather-desc {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .weather-location {
+            text-align: right;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .weather-location .loc-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
         }
 
         /* Mode Toggle */
         .mode-toggle {
             display: flex;
             gap: 8px;
-            margin: 0 20px 20px;
+            margin: 20px;
             padding: 4px;
-            background: var(--surface);
+            background: var(--surface-variant);
             border-radius: 28px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid var(--border);
+            width: fit-content;
+            box-shadow: var(--elevation-1);
         }
-        
+
         .mode-chip {
-            flex: 1;
-            padding: 12px 16px;
+            padding: 12px 24px;
             border: none;
             background: transparent;
             color: var(--text-secondary);
@@ -187,626 +234,630 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
         }
-        
+
         .mode-chip.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+            box-shadow: var(--elevation-1);
         }
 
-        /* Main Scan Button - Prominent */
-        .scan-section {
-            margin: 0 20px 24px;
-        }
-        
-        .scan-btn-main {
-            width: 100%;
+        /* Main Button */
+        .main-btn {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            padding: 32px 24px;
+            padding: 32px;
             border-radius: 28px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 8px 32px rgba(46,125,50,0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .scan-btn-main:active {
-            transform: scale(0.98);
-        }
-        
-        .scan-btn-main::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-        
-        .scan-icon {
-            font-size: 48px;
-            z-index: 1;
-        }
-        
-        .scan-text {
-            z-index: 1;
-            text-align: center;
-        }
-        
-        .scan-text small {
-            display: block;
-            font-size: 14px;
-            opacity: 0.9;
-            font-weight: 400;
-            margin-top: 4px;
-        }
-
-        /* Quick Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 0 20px 24px;
-        }
-        
-        .stat-card {
-            background: var(--surface);
-            padding: 16px 8px;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        
-        .stat-icon {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-value {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.3;
-        }
-        
-        .stat-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
-        /* Section Headers */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 0 20px 16px;
-        }
-        
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .section-icon {
-            background: var(--primary-light);
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        /* Krishi Database Cards */
-        .db-container {
-            margin: 0 20px;
-        }
-        
-        .db-card {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            transition: all 0.3s;
-        }
-        
-        .db-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-        }
-        
-        .db-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--bg);
-        }
-        
-        .db-icon {
-            font-size: 28px;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary));
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        
-        .db-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.3;
-        }
-        
-        .db-title span {
-            display: block;
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-weight: 400;
-            margin-top: 2px;
-        }
-
-        /* Hotlines Specific */
-        .hotline-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .hotline-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-            border-radius: 16px;
-            border-left: 4px solid var(--primary);
-        }
-        
-        [data-theme="dark"] .hotline-item {
-            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
-        }
-        
-        .hotline-number {
-            background: var(--primary);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            font-family: monospace;
-            letter-spacing: 1px;
-        }
-        
-        .hotline-info {
-            flex: 1;
-        }
-        
-        .hotline-name {
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-        
-        .hotline-desc {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        
-        .call-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Simple Explanation Box */
-        .simple-box {
-            background: #FFF8E1;
-            border: 2px solid var(--secondary-light);
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-        
-        [data-theme="dark"] .simple-box {
-            background: #4A3B20;
-            border-color: var(--secondary);
-        }
-        
-        .simple-title {
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-        }
-        
-        .simple-text {
-            font-size: 13px;
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        /* Rules List */
-        .rules-list {
-            counter-reset: rule-counter;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .rule-item {
-            display: flex;
-            gap: 12px;
-            padding: 14px;
-            background: var(--bg);
-            border-radius: 14px;
-            align-items: flex-start;
-        }
-        
-        .rule-number {
-            background: var(--primary);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        
-        .rule-content {
-            flex: 1;
-        }
-        
-        .rule-title {
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-        
-        .rule-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-
-        /* Crop Calendar */
-        .season-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-        
-        .season-tab {
-            padding: 10px 18px;
-            border: 2px solid var(--border);
-            background: var(--surface);
-            border-radius: 20px;
-            font-size: 13px;
+            margin: 20px;
+            width: calc(100% - 40px);
+            font-size: 20px;
             font-weight: 600;
             cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-        
-        .season-tab.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        
-        .season-content {
-            display: none;
-        }
-        
-        .season-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .crop-timeline {
-            background: var(--bg);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        
-        .timeline-header {
+            box-shadow: var(--elevation-2);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 12px;
-        }
-        
-        .crop-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .crop-months {
-            font-size: 13px;
-            color: var(--text-secondary);
-            background: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-        
-        .timeline-bar {
-            height: 8px;
-            background: #E0E0E0;
-            border-radius: 4px;
+            gap: 12px;
+            transition: all 0.3s;
             position: relative;
-            margin-bottom: 8px;
             overflow: hidden;
         }
-        
-        .timeline-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-light), var(--primary));
-            border-radius: 4px;
-            position: relative;
+
+        .main-btn:active {
+            transform: scale(0.98);
+            box-shadow: var(--elevation-1);
         }
-        
-        .timeline-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--text-secondary);
+
+        .main-btn .icon {
+            font-size: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
 
         /* Pages */
         .page {
             display: none;
-            animation: slideIn 0.3s ease;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .page.active {
             display: block;
         }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Camera Page */
-        .upload-container {
+        /* Upload Section */
+        .upload-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
             margin: 20px;
         }
-        
-        .upload-zone {
-            border: 3px dashed var(--border);
-            border-radius: 28px;
-            padding: 48px 24px;
-            text-align: center;
+
+        .upload-btn {
             background: var(--surface);
+            border: 2px dashed var(--outline);
+            border-radius: 24px;
+            padding: 32px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 16px;
-        }
-        
-        .upload-zone:hover {
-            border-color: var(--primary);
-            background: #F1F8E9;
-        }
-        
-        .upload-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-        
-        .upload-text {
-            font-size: 18px;
-            font-weight: 700;
             color: var(--text);
-            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .upload-hint {
-            font-size: 13px;
-            color: var(--text-secondary);
+
+        .upload-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-container);
+            transform: translateY(-2px);
+            box-shadow: var(--elevation-1);
         }
-        
-        .btn-primary {
-            width: 100%;
-            padding: 18px;
+
+        .upload-btn.primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
+            border-style: solid;
+            border-color: transparent;
+        }
+
+        .preview-container {
+            display: none;
+            margin: 20px;
+            animation: slideUp 0.3s;
+        }
+
+        .preview-container.show {
+            display: block;
+        }
+
+        .preview-img {
+            width: 100%;
+            border-radius: 24px;
+            max-height: 400px;
+            object-fit: cover;
+            box-shadow: var(--elevation-2);
+            border: 3px solid var(--surface-variant);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            margin-top: 16px;
+            background: var(--primary);
+            color: white;
             border: none;
-            border-radius: 16px;
+            border-radius: 50px;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(46,125,50,0.3);
+            box-shadow: var(--elevation-1);
             transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-        
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-        
-        .btn-secondary {
-            width: 100%;
-            padding: 16px;
-            background: var(--surface);
-            color: var(--text);
-            border: 2px solid var(--border);
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: all 0.3s;
+
+        .btn:hover {
+            box-shadow: var(--elevation-2);
+            transform: translateY(-2px);
         }
 
-        /* Result Page */
-        .result-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 0 0 32px 32px;
-            margin-bottom: 20px;
+        .btn-secondary {
+            background: var(--surface-variant);
+            color: var(--text);
         }
-        
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--outline);
+            color: var(--text);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 20px;
+            width: auto;
+            display: inline-flex;
+        }
+
+        /* Results */
+        .result-container {
+            padding: 20px;
+        }
+
+        .result-img {
+            width: 100%;
+            border-radius: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--elevation-2);
+            border: 3px solid var(--surface-variant);
+        }
+
         .result-card {
             background: var(--surface);
-            margin: 0 20px 20px;
             padding: 24px;
             border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+            box-shadow: var(--elevation-1);
+            border: 1px solid var(--outline);
+            position: relative;
+            overflow: hidden;
         }
-        
-        .disease-name {
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .result-card.disease::before {
+            background: var(--error);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .result-title {
             font-size: 24px;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 4px;
+            line-height: 1.2;
+            flex: 1;
         }
-        
-        .disease-name-bn {
-            font-size: 18px;
+
+        .result-card.disease .result-title {
+            color: var(--error);
+        }
+
+        .scientific-name {
+            font-style: italic;
             color: var(--text-secondary);
             margin-bottom: 16px;
+            font-size: 15px;
+            font-weight: 500;
         }
-        
-        .confidence-badge {
+
+        .speak-btn {
+            background: var(--primary-container);
+            color: var(--primary-dark);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .speak-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--elevation-1);
+        }
+
+        .disease-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #E8F5E9;
-            color: var(--primary-dark);
             padding: 8px 16px;
+            background: var(--error-container);
+            color: var(--error);
             border-radius: 20px;
             font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-weight: 600;
         }
 
-        /* Treatment Cards */
-        .treatment-grid {
+        .healthy-badge {
+            background: var(--primary-container);
+            color: var(--primary-dark);
+        }
+
+        .weather-badge {
+            background: #E3F2FD;
+            color: #1565C0;
+            margin-top: 8px;
+        }
+
+        .severity-indicator {
+            display: flex;
+            gap: 6px;
+            margin: 12px 0;
+        }
+
+        .severity-dot {
+            width: 32px;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--surface-variant);
+            transition: all 0.3s;
+        }
+
+        .severity-dot.active.low {
+            background: #F59E0B;
+            box-shadow: 0 0 8px #F59E0B;
+        }
+
+        .severity-dot.active.medium {
+            background: #F57C00;
+            box-shadow: 0 0 8px #F57C00;
+        }
+
+        .severity-dot.active.high {
+            background: var(--error);
+            box-shadow: 0 0 8px var(--error);
+        }
+
+        .care-grid {
             display: grid;
             gap: 12px;
         }
-        
-        .treatment-item {
-            background: var(--bg);
+
+        .care-item {
+            background: var(--background);
             padding: 16px;
             border-radius: 16px;
             border-left: 4px solid var(--primary);
+            transition: transform 0.2s;
         }
-        
-        .treatment-label {
+
+        .care-item:hover {
+            transform: translateX(4px);
+        }
+
+        .care-item.disease {
+            border-left-color: var(--error);
+        }
+
+        .care-item.warning {
+            border-left-color: var(--warning);
+        }
+
+        .care-item.info {
+            border-left-color: var(--info);
+        }
+
+        .care-label {
             font-size: 12px;
             color: var(--text-secondary);
             text-transform: uppercase;
+            margin-bottom: 6px;
             font-weight: 700;
-            margin-bottom: 4px;
             letter-spacing: 0.5px;
-        }
-        
-        .treatment-value {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text);
-            line-height: 1.4;
-        }
-
-        /* Weather Suitability */
-        .suitability-card {
-            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 16px;
-        }
-        
-        [data-theme="dark"] .suitability-card {
-            background: linear-gradient(135deg, #1B5E20 0%, #0D3328 100%);
-        }
-        
-        .suitability-icon {
-            font-size: 40px;
-        }
-        
-        .suitability-content h4 {
-            font-size: 16px;
-            color: var(--primary-dark);
-            margin-bottom: 4px;
-        }
-        
-        .suitability-content p {
-            font-size: 13px;
-            color: var(--text-secondary);
+            gap: 6px;
         }
 
-        /* Bottom Navigation */
+        .care-value {
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        /* Helpline Section on Home */
+        .helpline-section-home {
+            margin: 20px;
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid #90CAF9;
+            margin-bottom: 20px;
+        }
+
+        [data-theme="dark"] .helpline-section-home {
+            background: linear-gradient(135deg, #1A237E 0%, #283593 100%);
+            border-color: #5C6BC0;
+        }
+
+        .helpline-title-home {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1565C0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        [data-theme="dark"] .helpline-title-home {
+            color: #90CAF9;
+        }
+
+        .helpline-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .helpline-card-home {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #1565C0;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        [data-theme="dark"] .helpline-card-home {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .helpline-card-home:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .helpline-number-home {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1565C0;
+            margin-bottom: 4px;
+        }
+
+        [data-theme="dark"] .helpline-number-home {
+            color: #90CAF9;
+        }
+
+        .helpline-label-home {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Weather Detail Page */
+        .weather-detail {
+            padding: 20px;
+        }
+
+        .weather-card-large {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 28px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: var(--elevation-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-large-icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            position: relative;
+        }
+
+        .weather-large-temp {
+            font-size: 64px;
+            font-weight: 300;
+            line-height: 1;
+            position: relative;
+        }
+
+        .weather-large-desc {
+            font-size: 20px;
+            margin-top: 8px;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        .weather-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .weather-detail-item {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--outline);
+        }
+
+        .weather-detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .weather-detail-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .farming-advice {
+            background: var(--primary-container);
+            border-radius: 20px;
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .farming-advice h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .advice-text {
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* 7-Day Forecast */
+        .forecast-container {
+            margin-top: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .forecast-scroll {
+            display: flex;
+            gap: 12px;
+            min-width: max-content;
+        }
+
+        .forecast-day {
+            background: var(--surface);
+            padding: 16px 12px;
+            border-radius: 20px;
+            text-align: center;
+            min-width: 80px;
+            border: 2px solid var(--surface-variant);
+            transition: all 0.2s;
+        }
+
+        .forecast-day:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .forecast-day-name {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .forecast-icon {
+            font-size: 32px;
+            margin: 8px 0;
+        }
+
+        .forecast-temp {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .forecast-rain {
+            font-size: 12px;
+            color: var(--info);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            backdrop-filter: blur(8px);
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .spinner::after {
+            content: '🌱';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            animation: none;
+            border: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .loading-sub {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -818,12 +869,12 @@
             display: flex;
             justify-content: space-around;
             padding: 12px 0 24px;
-            box-shadow: 0 -4px 24px rgba(0,0,0,0.1);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
             z-index: 100;
             border-radius: 24px 24px 0 0;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--outline);
         }
-        
+
         .nav-item {
             display: flex;
             flex-direction: column;
@@ -834,23 +885,32 @@
             color: var(--text-secondary);
             border-radius: 16px;
             transition: all 0.3s;
-            border: none;
-            background: transparent;
+            min-width: 70px;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: var(--primary-container);
+            transform: translateY(-4px);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+        }
+
+        .nav-label {
             font-size: 12px;
             font-weight: 600;
         }
-        
-        .nav-item.active {
-            color: var(--primary);
-            background: #E8F5E9;
-        }
-        
-        .nav-icon {
-            font-size: 24px;
-        }
 
-        /* Settings Modal */
-        .modal {
+        /* Panels */
+        .panel-overlay {
             display: none;
             position: fixed;
             top: 0;
@@ -858,93 +918,153 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.6);
-            z-index: 1000;
-            justify-content: flex-end;
+            z-index: 200;
+            justify-content: center;
+            align-items: flex-end;
             backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        
-        .modal.show {
+
+        .panel-overlay.show {
             display: flex;
+            opacity: 1;
         }
-        
-        .modal-content {
+
+        .panel-content {
             background: var(--surface);
             width: 100%;
             max-width: 480px;
-            height: 100%;
-            max-height: 90vh;
             border-radius: 32px 32px 0 0;
             padding: 24px;
+            max-height: 85vh;
             overflow-y: auto;
-            animation: slideUp 0.3s ease;
+            box-shadow: var(--elevation-3);
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+
+        .panel-overlay.show .panel-content {
+            transform: translateY(0);
         }
-        
-        .modal-header {
+
+        .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
             padding-bottom: 16px;
-            border-bottom: 2px solid var(--bg);
+            border-bottom: 2px solid var(--surface-variant);
         }
-        
-        .modal-title {
-            font-size: 20px;
+
+        .panel-title {
+            font-size: 24px;
             font-weight: 700;
+            color: var(--text);
         }
-        
+
         .close-btn {
-            background: var(--bg);
+            background: var(--surface-variant);
             border: none;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            font-size: 20px;
             cursor: pointer;
+            font-size: 20px;
+            color: var(--text);
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s;
         }
-        
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: var(--bg);
-            border-radius: 16px;
-            margin-bottom: 12px;
+
+        .close-btn:hover {
+            background: var(--error-container);
+            color: var(--error);
+            transform: rotate(90deg);
         }
-        
-        .setting-info h4 {
-            font-size: 16px;
-            margin-bottom: 4px;
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 20px;
         }
-        
-        .setting-info p {
-            font-size: 13px;
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
             color: var(--text-secondary);
         }
-        
-        .toggle {
-            width: 52px;
-            height: 32px;
-            background: #ccc;
+
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--outline);
             border-radius: 16px;
-            position: relative;
-            cursor: pointer;
+            font-size: 15px;
+            background: var(--background);
+            color: var(--text);
             transition: all 0.3s;
         }
-        
-        .toggle.active {
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding: 4px;
+            background: var(--surface-variant);
+            border-radius: 12px;
+        }
+
+        .lang-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--elevation-1);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--background);
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 32px;
+            background: var(--outline);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
             background: var(--primary);
         }
-        
+
         .toggle-thumb {
             position: absolute;
             top: 4px;
@@ -953,88 +1073,130 @@
             height: 24px;
             background: white;
             border-radius: 50%;
-            transition: all 0.3s;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        
-        .toggle.active .toggle-thumb {
+
+        .toggle-switch.active .toggle-thumb {
             transform: translateX(20px);
         }
 
-        /* Dev Info in Settings */
-        .dev-section {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            color: white;
-            padding: 24px;
-            border-radius: 20px;
-            margin-top: 24px;
-            text-align: center;
-        }
-        
-        .dev-avatar {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            margin: 0 auto 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .dev-name {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        
-        .dev-role {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 12px;
-        }
-        
-        .dev-school {
-            background: rgba(255,255,255,0.15);
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 13px;
-            line-height: 1.4;
+        /* Recent List */
+        .recent-list {
+            padding: 0 20px;
         }
 
-        /* Loading */
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 24px 20px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .plant-card {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--elevation-1);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plant-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--elevation-2);
+            border-color: var(--outline);
+        }
+
+        .plant-card::before {
+            content: '';
+            position: absolute;
             left: 0;
-            width: 100%;
+            top: 0;
             height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            flex-direction: column;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .plant-card.disease::before {
+            background: var(--error);
+        }
+
+        .plant-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: var(--background);
+            display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            font-size: 32px;
+            flex-shrink: 0;
+            overflow: hidden;
         }
-        
-        .loading-overlay.show {
+
+        .plant-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .plant-info {
+            flex: 1;
+        }
+
+        .plant-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .plant-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
             display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255,255,255,0.2);
-            border-top-color: var(--primary-light);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+
+        .plant-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: var(--primary-container);
+            color: var(--primary);
+            font-weight: 600;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+
+        .plant-badge.disease {
+            background: var(--error-container);
+            color: var(--error);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
         }
 
         /* Toast */
@@ -1042,685 +1204,1557 @@
             position: fixed;
             bottom: 100px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(100px);
             background: var(--text);
             color: white;
             padding: 16px 24px;
             border-radius: 50px;
             font-size: 14px;
             font-weight: 500;
+            box-shadow: var(--elevation-3);
             z-index: 3000;
             opacity: 0;
             transition: all 0.3s;
-            pointer-events: none;
-            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
+
         .toast.show {
+            transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
 
-        /* Responsive */
-        @media (max-width: 380px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* Helpline in Settings */
+        .helpline-section {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #90CAF9;
+        }
+
+        [data-theme="dark"] .helpline-section {
+            background: linear-gradient(135deg, #1A237E 0%, #283593 100%);
+            border-color: #5C6BC0;
+        }
+
+        .helpline-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1565C0;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        [data-theme="dark"] .helpline-title {
+            color: #90CAF9;
+        }
+
+        .helpline-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #1565C0;
+        }
+
+        [data-theme="dark"] .helpline-card {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .helpline-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1565C0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        [data-theme="dark"] .helpline-number {
+            color: #90CAF9;
+        }
+
+        .helpline-info {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .helpline-info-item {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .helpline-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+
+        /* Developer Card */
+        .dev-card {
+            background: linear-gradient(135deg, var(--primary-container) 0%, var(--secondary-container) 100%);
+            padding: 24px;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .dev-card {
+            background: linear-gradient(135deg, #1B5E20 0%, #0D3328 100%);
+            color: white;
+        }
+
+        .dev-avatar {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: var(--elevation-2);
+        }
+
+        .dev-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .dev-role {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .contact-btn {
+            background: var(--background);
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--elevation-1);
+        }
+
+        .version-info {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border-top: 1px solid var(--outline);
+            margin-top: 20px;
+        }
+
+        .suitability-suitable {
+            color: #2E7D32;
+            font-weight: 700;
+        }
+
+        .suitability-partial {
+            color: #F57C00;
+            font-weight: 700;
+        }
+
+        .suitability-unsuitable {
+            color: #C62828;
+            font-weight: 700;
+        }
+
+        @media (max-width: 360px) {
+            .helpline-grid {
+                grid-template-columns: 1fr;
             }
-            .logo {
-                font-size: 20px;
-            }
+            .logo { font-size: 20px; }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Loading Overlay -->
-        <div class="loading-overlay" id="loading">
+        <!-- Header with Weather -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">🌿 <span id="appTitle">Plant Doctor</span></div>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle Theme">🌙</button>
+                    <button class="icon-btn" onclick="toggleSettings()" title="Settings">⚙️</button>
+                </div>
+            </div>
+            
+            <div id="greeting" style="font-size: 16px; opacity: 0.9; margin-bottom: 4px;">Welcome, Farmer</div>
+            <div id="apiStatus" style="font-size: 13px; opacity: 0.8;">Multi-AI System Ready</div>
+
+            <!-- Weather Widget -->
+            <div class="weather-widget" onclick="showWeatherDetail()">
+                <div class="weather-main">
+                    <div class="weather-icon" id="weatherIcon">🌤️</div>
+                    <div class="weather-info">
+                        <h3 id="weatherLabel">Weather</h3>
+                        <div class="weather-temp" id="weatherTemp">--°</div>
+                        <div class="weather-desc" id="weatherDesc">Tap to refresh</div>
+                    </div>
+                </div>
+                <div class="weather-location">
+                    <div class="loc-name" id="locName">--</div>
+                    <div id="weatherHumidity">--</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Toggle -->
+        <div class="mode-toggle">
+            <button class="mode-chip active" onclick="setMode('identify')" id="modeIdentify">
+                🔍 <span id="txtIdentify">Identify</span>
+            </button>
+            <button class="mode-chip" onclick="setMode('disease')" id="modeDisease">
+                🔬 <span id="txtDisease">Disease</span>
+            </button>
+        </div>
+
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <button class="main-btn" onclick="setPage('camera')">
+                <span class="icon" id="mainIcon">📷</span>
+                <span id="mainBtnText">Identify Plant</span>
+            </button>
+
+            <!-- Helpline Numbers on Home Screen -->
+            <div class="helpline-section-home">
+                <div class="helpline-title-home" id="homeHelplineTitle">
+                    📞 Agricultural Helpline
+                </div>
+                <div class="helpline-grid">
+                    <a href="tel:16123" class="helpline-card-home">
+                        <div class="helpline-number-home">16123</div>
+                        <div class="helpline-label-home" id="homeHelpline1">Krishi Call Center</div>
+                    </a>
+                    <a href="tel:3331" class="helpline-card-home">
+                        <div class="helpline-number-home">3331</div>
+                        <div class="helpline-label-home" id="homeHelpline2">Krishak Bandhu</div>
+                    </a>
+                </div>
+                <div style="margin-top: 12px; font-size: 12px; color: var(--text-secondary); text-align: center;" id="homeHelplineTime">
+                    Hours: 8:00 AM - 8:00 PM | Closed: Fri, Sat & Govt. Holidays
+                </div>
+            </div>
+
+            <div class="section-title">
+                <span id="recentTitle">Recent Scans</span>
+                <button class="btn btn-sm btn-outline" onclick="clearRecent()" id="clearBtn" style="display: none;">Clear</button>
+            </div>
+            <div id="recentList" class="recent-list">
+                <div class="empty-state" id="emptyRecent">
+                    <div class="empty-icon">🌱</div>
+                    <div>No scans yet</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Camera/Upload Page -->
+        <div id="cameraPage" class="page">
+            <div class="upload-options">
+                <div class="upload-btn primary" onclick="openCamera()">
+                    <div class="upload-icon">📸</div>
+                    <div class="upload-text" id="txtCamera">Take Photo</div>
+                    <div class="upload-hint" id="hintCamera">Use camera</div>
+                </div>
+                
+                <div class="upload-btn" onclick="openGallery()">
+                    <div class="upload-icon">🖼️</div>
+                    <div class="upload-text" id="txtGallery">Upload from Gallery</div>
+                    <div class="upload-hint" id="hintGallery">Choose existing photo</div>
+                </div>
+            </div>
+            
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleImage(event)" style="display: none;">
+            <input type="file" id="galleryInput" accept="image/*" onchange="handleImage(event)" style="display: none;">
+            
+            <div class="preview-container" id="previewBox">
+                <img class="preview-img" id="previewImg" src="">
+                <button class="btn" onclick="analyzeImage()" id="analyzeBtn">
+                    <span>🔍</span> <span id="analyzeText">Analyze</span>
+                </button>
+                <button class="btn btn-secondary" onclick="resetUpload()" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Result Page -->
+        <div id="resultPage" class="page">
+            <div class="result-container">
+                <img class="result-img" id="resultImg" src="">
+                
+                <div class="result-card" id="resultCard">
+                    <div class="result-header">
+                        <div>
+                            <div class="result-title" id="resName">Unknown</div>
+                            <div class="scientific-name" id="resSci">Scientific: -</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakResult()" title="Read Aloud">🔊</button>
+                    </div>
+                    
+                    <div id="diseaseUI" style="display: none;">
+                        <div class="severity-indicator" id="severityIndicator">
+                            <div class="severity-dot"></div>
+                            <div class="severity-dot"></div>
+                            <div class="severity-dot"></div>
+                        </div>
+                        <div class="disease-badge" id="diseaseBadge">⚠️ Disease Detected</div>
+                    </div>
+                    
+                    <div id="plantUI" style="display: none;">
+                        <div class="disease-badge healthy-badge" id="plantBadge">🌱 Plant Identified</div>
+                    </div>
+                    
+                    <div id="weatherSuitabilityUI" style="display: none; margin-top: 16px;">
+                        <div class="disease-badge weather-badge" id="suitabilityBadge">
+                            🌦️ Checking Weather...
+                        </div>
+                        <p id="weatherAdvice" style="margin-top: 8px; font-size: 14px; color: var(--text-secondary);"></p>
+                    </div>
+                    
+                    <p id="resDesc" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.6; font-size: 15px;"></p>
+                </div>
+                
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <span id="careTitle">Care Instructions</span>
+                    <button class="speak-btn btn-sm" onclick="speakCare()" title="Read Instructions" style="width: 32px; height: 32px; font-size: 16px;">🔊</button>
+                </div>
+                
+                <div class="care-grid" id="careContainer">
+                    <div class="care-item">
+                        <div class="care-label" id="label1">💧 Watering</div>
+                        <div class="care-value" id="care1">-</div>
+                    </div>
+                    <div class="care-item">
+                        <div class="care-label" id="label2">☀️ Sunlight</div>
+                        <div class="care-value" id="care2">-</div>
+                    </div>
+                    <div class="care-item" id="careItem3">
+                        <div class="care-label" id="label3">🧪 Fertilizer</div>
+                        <div class="care-value" id="care3">-</div>
+                    </div>
+                    <div class="care-item" id="careItem4">
+                        <div class="care-label" id="label4">🌡️ Temperature</div>
+                        <div class="care-value" id="care4">-</div>
+                    </div>
+                    
+                    <div class="care-item info" id="weatherCareItem" style="display: none;">
+                        <div class="care-label">🌦️ Weather Adjustment</div>
+                        <div class="care-value" id="weatherCare">-</div>
+                    </div>
+                    
+                    <div class="care-item info" id="forecastCareItem" style="display: none;">
+                        <div class="care-label">📅 7-Day Outlook</div>
+                        <div class="care-value" id="forecastCare">-</div>
+                    </div>
+                </div>
+                
+                <div id="treatmentContainer" style="display: none;">
+                    <div class="care-item disease">
+                        <div class="care-label" id="labelTreatment">💊 Treatment</div>
+                        <div class="care-value" id="treatment">-</div>
+                    </div>
+                    <div class="care-item warning">
+                        <div class="care-label" id="labelPrevention">⚠️ Prevention</div>
+                        <div class="care-value" id="prevention">-</div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="setPage('home')" style="margin-top: 24px;" id="backBtn">Back to Home</button>
+            </div>
+        </div>
+
+        <!-- Weather Detail Page -->
+        <div id="weatherPage" class="page">
+            <div class="weather-detail">
+                <div class="weather-card-large">
+                    <div class="weather-large-icon" id="detailIcon">🌤️</div>
+                    <div class="weather-large-temp" id="detailTemp">--°C</div>
+                    <div class="weather-large-desc" id="detailDesc">--</div>
+                    <div style="margin-top: 16px; font-size: 16px; opacity: 0.9;" id="detailLoc">--</div>
+                </div>
+
+                <div class="weather-details-grid">
+                    <div class="weather-detail-item">
+                        <div class="weather-detail-label">Humidity</div>
+                        <div class="weather-detail-value" id="detailHumidity">--%</div>
+                    </div>
+                    <div class="weather-detail-item">
+                        <div class="weather-detail-label">Wind</div>
+                        <div class="weather-detail-value" id="detailWind">-- km/h</div>
+                    </div>
+                    <div class="weather-detail-item">
+                        <div class="weather-detail-label">Feels Like</div>
+                        <div class="weather-detail-value" id="detailFeels">--°</div>
+                    </div>
+                    <div class="weather-detail-item">
+                        <div class="weather-detail-label">UV Index</div>
+                        <div class="weather-detail-value" id="detailUV">--</div>
+                    </div>
+                </div>
+
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">7-Day Rain Forecast</div>
+                <div class="forecast-container" style="margin-bottom: 20px;">
+                    <div class="forecast-scroll" id="detailForecastContainer"></div>
+                </div>
+
+                <div class="farming-advice">
+                    <h3>🌾 <span id="farmAdviceTitle">Farming Recommendation</span></h3>
+                    <div class="advice-text" id="farmAdviceText">Based on current weather conditions...</div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="setPage('home')" style="margin-top: 20px;">Back</button>
+            </div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="panel-overlay" id="settingsPanel" onclick="toggleSettings()">
+            <div class="panel-content" onclick="event.stopPropagation()">
+                <div class="panel-header">
+                    <div class="panel-title" id="settingsTitle">Settings</div>
+                    <button class="close-btn" onclick="toggleSettings()">✕</button>
+                </div>
+                
+                <div class="theme-toggle">
+                    <span id="themeLabel">Dark Theme</span>
+                    <div class="toggle-switch" id="themeSwitch" onclick="toggleTheme()">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label id="langLabel">Language</label>
+                    <div class="lang-toggle">
+                        <button class="lang-btn active" onclick="setLang('en')" id="btnEn">English</button>
+                        <button class="lang-btn" onclick="setLang('bn')" id="btnBn">বাংলা</button>
+                    </div>
+                </div>
+
+                <!-- Helpline Section -->
+                <div class="helpline-section">
+                    <div class="helpline-title">
+                        📞 <span id="helplineTitle">Agricultural Helpline</span>
+                    </div>
+                    
+                    <div class="helpline-card">
+                        <div class="helpline-number">📞 16123</div>
+                        <div class="helpline-info">
+                            <div class="helpline-info-item">
+                                <span class="helpline-label" id="labelHours">Hours:</span>
+                                <span id="hoursText">8:00 AM - 8:00 PM (Daily)</span>
+                            </div>
+                            <div class="helpline-info-item">
+                                <span class="helpline-label" id="labelClosed">Closed:</span>
+                                <span id="closedText">Friday, Saturday & Govt. Holidays</span>
+                            </div>
+                            <div class="helpline-info-item">
+                                <span class="helpline-label" id="labelCost">Cost:</span>
+                                <span id="costText">0.25 Taka/min (excl. VAT)</span>
+                            </div>
+                            <div class="helpline-info-item">
+                                <span class="helpline-label" id="labelService">Service:</span>
+                                <span id="serviceText">Agriculture, Fisheries & Livestock Expert Advice</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="helpline-card">
+                        <div class="helpline-number">📞 3331</div>
+                        <div class="helpline-info">
+                            <div class="helpline-info-item" style="margin-bottom: 0;">
+                                <span id="altServiceText">Krishak Bandhu (Farmer Friend) Service. Registration required. Connects you directly to your nearest Agriculture Office.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Developer Info -->
+                <div class="dev-card">
+                    <div class="dev-avatar">👨‍🎓</div>
+                    <div class="dev-name">Sabit Al Mahi</div>
+                    <div class="dev-role" id="devRole">Student Developer</div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 12px; font-size: 14px; margin-bottom: 12px;">
+                        AC Laha Pilot High School<br>
+                        <span style="font-size: 12px; opacity: 0.8;">Science Project</span>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.9; font-style: italic;">
+                        Not a professional developer<br>
+                        Just a student with passion!
+                    </div>
+                    
+                    <div class="contact-grid">
+                        <a href="mailto:sabitalmahi99@gmail.com" class="contact-btn">
+                            <span style="font-size: 24px;">📧</span>
+                            <span>Email</span>
+                        </a>
+                        <a href="https://wa.me/8801920282341" class="contact-btn" target="_blank">
+                            <span style="font-size: 24px;">💬</span>
+                            <span>WhatsApp</span>
+                        </a>
+                        <a href="https://t.me/+8801920282341" class="contact-btn" target="_blank">
+                            <span style="font-size: 24px;">✈️</span>
+                            <span>Telegram</span>
+                        </a>
+                        <a href="https://www.facebook.com/share/18LmN47961/" class="contact-btn" target="_blank">
+                            <span style="font-size: 24px;">📘</span>
+                            <span>Facebook</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label id="apiLabel1">API Key 1 (Primary)</label>
+                    <input type="text" id="apiKey1" placeholder="sk-or-v1-...">
+                </div>
+                
+                <div class="input-group">
+                    <label id="apiLabel2">API Key 2 (Backup)</label>
+                    <input type="text" id="apiKey2" placeholder="sk-or-v1-...">
+                </div>
+                
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;" id="apiDesc">
+                    Default keys are pre-loaded. Add your own for higher limits.
+                </div>
+                
+                <button class="btn" onclick="saveSettings()" id="saveBtn">Save Settings</button>
+                <button class="btn btn-secondary" onclick="resetApiKeys()" style="margin-top: 8px;" id="resetBtn">Reset to Default</button>
+                
+                <div class="version-info">
+                    <div>গাছের ডাক্তার (Plant Doctor)</div>
+                    <div>Version 3.0 | AI Weather Integrated</div>
+                    <div style="margin-top: 8px;">Built with ❤️ in Bangladesh</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
             <div class="spinner"></div>
-            <div style="font-size: 18px; font-weight: 600;">গাছ চিহ্নিত করা হচ্ছে...</div>
-            <div style="font-size: 14px; opacity: 0.7; margin-top: 8px">Identifying Plant...</div>
+            <div class="loading-text" id="loadingText">Analyzing...</div>
+            <div class="loading-sub" id="loadingSub">Analyzing with Weather Context</div>
         </div>
 
         <!-- Toast -->
         <div class="toast" id="toast"></div>
 
-        <!-- Header -->
-        <div class="header">
-            <div class="header-top">
-                <div class="logo">
-                    <div class="logo-icon">🌿</div>
-                    <div>
-                        গাছের ডাক্তার
-                        <div class="subtitle">Plant Doctor Bangladesh</div>
-                    </div>
-                </div>
-                <div class="header-actions">
-                    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-                    <button class="icon-btn" onclick="openSettings()">⚙️</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- HOME PAGE -->
-        <div id="homePage" class="page active">
-            <!-- Weather Bar -->
-            <div class="weather-bar">
-                <div class="weather-info">
-                    <h3>আজকের আবহাওয়া</h3>
-                    <div class="weather-temp" id="currentTemp">--°C</div>
-                    <div class="weather-desc" id="weatherDesc">অবস্থান চিহ্নিত করা হচ্ছে...</div>
-                </div>
-                <div class="weather-icon" id="weatherIcon">🌤️</div>
-            </div>
-
-            <!-- Mode Toggle -->
-            <div class="mode-toggle">
-                <button class="mode-chip active" onclick="setMode('identify')" id="modeIdentify">
-                    🔍 চিহ্নিত করুন
-                </button>
-                <button class="mode-chip" onclick="setMode('disease')" id="modeDisease">
-                    🔬 রোগ সনাক্ত
-                </button>
-            </div>
-
-            <!-- Main Scan Button -->
-            <div class="scan-section">
-                <button class="scan-btn-main" onclick="startScan()">
-                    <span class="scan-icon">📷</span>
-                    <span class="scan-text">
-                        গাছ স্ক্যান করুন
-                        <small>Scan Your Plant</small>
-                    </span>
-                </button>
-            </div>
-
-            <!-- Quick Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">📅</div>
-                    <div class="stat-value">৩টি ঋতু</div>
-                    <div class="stat-label">3 Seasons</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🌾</div>
-                    <div class="stat-value">বোরো</div>
-                    <div class="stat-label">Boro Season</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">☎️</div>
-                    <div class="stat-value">১৬১২৩</div>
-                    <div class="stat-label">Krishi Helpline</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CAMERA PAGE -->
-        <div id="cameraPage" class="page">
-            <div class="upload-container">
-                <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-                    <div class="upload-icon">📸</div>
-                    <div class="upload-text">ছবি তুলুন বা নির্বাচন করুন</div>
-                    <div class="upload-hint">Take or Select Photo</div>
-                </div>
-                <input type="file" id="fileInput" accept="image/*" style="display: none" onchange="handleImage(event)">
-                
-                <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
-                    📁 গ্যালারি থেকে
-                </button>
-                <button class="btn-secondary" onclick="showPage('home')">
-                    ❌ বাতিল
-                </button>
-            </div>
-        </div>
-
-        <!-- RESULT PAGE -->
-        <div id="resultPage" class="page">
-            <img id="resultImage" class="result-image" src="" alt="Plant">
-            
-            <div class="result-card">
-                <div class="disease-name" id="resultTitle">ধান পাতা পোড়া রোগ</div>
-                <div class="disease-name-bn" id="resultSubtitle">Rice Blast Disease</div>
-                <div class="confidence-badge">
-                    ✅ <span id="confidenceText">৯৫% নির্ভুলতা</span>
-                </div>
-
-                <!-- Weather Suitability -->
-                <div class="suitability-card" id="suitabilityCard">
-                    <div class="suitability-icon">🌡️</div>
-                    <div class="suitability-content">
-                        <h4>আবহাওয়া উপযোগিতা: ভালো</h4>
-                        <p>Weather Suitability: Good for treatment</p>
-                    </div>
-                </div>
-
-                <!-- Treatment Info -->
-                <div class="treatment-grid">
-                    <div class="treatment-item">
-                        <div class="treatment-label">সার ব্যবহার / Fertilizer</div>
-                        <div class="treatment-value" id="fertilizer">ইউরিয়া সার প্রয়োগ করুন</div>
-                    </div>
-                    <div class="treatment-item">
-                        <div class="treatment-label">সেচ / Irrigation</div>
-                        <div class="treatment-value" id="irrigation">সপ্তাহে ২ বার পানি দিন</div>
-                    </div>
-                    <div class="treatment-item">
-                        <div class="treatment-label">সতর্কতা / Warning</div>
-                        <div class="treatment-value" id="warning">অতিরিক্ত রোদ থেকে বাঁচান</div>
-                    </div>
-                </div>
-
-                <!-- Simple Explanation -->
-                <div class="simple-box" style="margin-top: 20px;">
-                    <div class="simple-title">💡 সহজ ভাষায় / Simple Explanation</div>
-                    <div class="simple-text" id="simpleExplain">
-                        এই রোগটি ফাঙ্গাস দ্বারা হয়। এটি গাছের পাতায় দাগ তৈরি করে। সঠিক সার ও ওষুধ ব্যবহার করলে ৭ দিনের মধ্যে ভালো হয়ে যাবে।
-                    </div>
-                </div>
-            </div>
-
-            <div style="margin: 0 20px 100px;">
-                <button class="btn-primary" onclick="showPage('home')">
-                    🏠 হোমে ফিরে যান
-                </button>
-            </div>
-        </div>
-
-        <!-- KRISHI GUIDE PAGE -->
-        <div id="guidePage" class="page">
-            <div class="section-header">
-                <div class="section-title">
-                    <div class="section-icon">📚</div>
-                    কৃষি গাইড / Krishi Guide
-                </div>
-            </div>
-
-            <div class="db-container">
-                <!-- Emergency Hotlines -->
-                <div class="db-card">
-                    <div class="db-header">
-                        <div class="db-icon">☎️</div>
-                        <div class="db-title">
-                            জরুরী হটলাইন
-                            <span>Emergency Hotlines</span>
-                        </div>
-                    </div>
-                    
-                    <div class="hotline-list">
-                        <div class="hotline-item">
-                            <div class="hotline-number">16123</div>
-                            <div class="hotline-info">
-                                <div class="hotline-name">কৃষি কল সেন্টার</div>
-                                <div class="hotline-desc">Krishi Call Center (Free, 24/7)</div>
-                            </div>
-                            <button class="call-btn" onclick="callNumber('16123')">📞</button>
-                        </div>
-                        
-                        <div class="hotline-item">
-                            <div class="hotline-number">333</div>
-                            <div class="hotline-info">
-                                <div class="hotline-name">জাতীয় তথ্য সেবা</div>
-                                <div class="hotline-desc">National Information Service</div>
-                            </div>
-                            <button class="call-btn" onclick="callNumber('333')">📞</button>
-                        </div>
-                        
-                        <div class="hotline-item">
-                            <div class="hotline-number">999</div>
-                            <div class="hotline-info">
-                                <div class="hotline-name">জরুরী সেবা</div>
-                                <div class="hotline-desc">Emergency Services (Police)</div>
-                            </div>
-                            <button class="call-btn" onclick="callNumber('999')">📞</button>
-                        </div>
-                    </div>
-
-                    <div class="simple-box">
-                        <div class="simple-title">💡 কীভাবে ব্যবহার করবেন?</div>
-                        <div class="simple-text">
-                            <strong>১৬১২৩</strong> নম্বরে ফ্রি কল দিন। কৃষি বিশেষজ্ঞরা ফসলের রোগ, সার, বীজ সম্পর্কে পরামর্শ দেবেন। সকাল ৮টা থেকে রাত ৮টা পর্যন্ত খোলা।
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 10 Golden Rules -->
-                <div class="db-card">
-                    <div class="db-header">
-                        <div class="db-icon">📋</div>
-                        <div class="db-title">
-                            ১০টি স্বর্ণালী নিয়ম
-                            <span>10 Golden Rules of Farming</span>
-                        </div>
-                    </div>
-                    
-                    <div class="rules-list">
-                        <div class="rule-item">
-                            <div class="rule-number">1</div>
-                            <div class="rule-content">
-                                <div class="rule-title">মাটি পরীক্ষা করুন / Soil Test</div>
-                                <div class="rule-desc">বপনের আগে মাটি পরীক্ষা করে সার নির্ধারণ করুন। এতে ৩০% খরচ কমবে।</div>
-                            </div>
-                        </div>
-                        
-                        <div class="rule-item">
-                            <div class="rule-number">2</div>
-                            <div class="rule-content">
-                                <div class="rule-title">ভালো বীজ ব্যবহার করুন / Quality Seeds</div>
-                                <div class="rule-desc">সরকারি অনুমোদিত দোকান থেকে সার্টিফাইড বীজ কিনুন।</div>
-                            </div>
-                        </div>
-                        
-                        <div class="rule-item">
-                            <div class="rule-number">3</div>
-                            <div class="rule-content">
-                                <div class="rule-title">সঠিক দূরত্ব / Right Distance</div>
-                                <div class="rule-desc">গাছের মাঝে পর্যাপ্ত ফাঁকা রাখুন যাতে বাতাস ও আলো যায়।</div>
-                            </div>
-                        </div>
-                        
-                        <div class="rule-item">
-                            <div class="rule-number">4</div>
-                            <div class="rule-content">
-                                <div class="rule-title">সময়মতো সেচ / Water Timing</div>
-                                <div class="rule-desc">সকাল বা বিকেলে পানি দিন। দুপুরে রোদে পানি দিলে গাছ পোড়ে।</div>
-                            </div>
-                        </div>
-                        
-                        <div class="rule-item">
-                            <div class="rule-number">5</div>
-                            <div class="rule-content">
-                                <div class="rule-title">জৈব সার ব্যবহার / Organic Fertilizer</div>
-                                <div class="rule-desc">গোবর ও কম্পোস্ট সার ব্যবহার করুন। মাটির শক্তি বাড়বে।</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn-secondary" onclick="showToast('সম্পূর্ণ নিয়মের তালিকা শীঘ্রই আসছে')" style="margin-top: 16px;">
-                        সব নিয়ম দেখুন (১০টি)
-                    </button>
-
-                    <div class="simple-box">
-                        <div class="simple-title">💡 কেন এই নিয়ম?</div>
-                        <div class="simple-text">
-                            এই নিয়মগুলো বাংলাদেশ কৃষি গবেষণা ইনস্টিটিউট (BARI) পরীক্ষিত। মানলে ফলন ৫০% বাড়ে ও রোগ কমে।
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Crop Calendar -->
-                <div class="db-card">
-                    <div class="db-header">
-                        <div class="db-icon">📅</div>
-                        <div class="db-title">
-                            ফসলের ক্যালেন্ডার
-                            <span>Crop Calendar Bangladesh</span>
-                        </div>
-                    </div>
-
-                    <div class="season-tabs">
-                        <button class="season-tab active" onclick="showSeason('boro')">বোরো (Boro)</button>
-                        <button class="season-tab" onclick="showSeason('aus')">আউস (Aus)</button>
-                        <button class="season-tab" onclick="showSeason('aman')">আমন (Aman)</button>
-                    </div>
-
-                    <!-- Boro Season -->
-                    <div id="boro" class="season-content active">
-                        <div class="crop-timeline">
-                            <div class="timeline-header">
-                                <div class="crop-name">বোরো ধান (Boro Rice)</div>
-                                <div class="crop-months">ডিসেম্বর - মে</div>
-                            </div>
-                            <div class="timeline-bar">
-                                <div class="timeline-fill" style="width: 100%"></div>
-                            </div>
-                            <div class="timeline-labels">
-                                <span>বপন<br>Dec</span>
-                                <span>রোপণ<br>Jan</span>
-                                <span>বৃদ্ধি<br>Feb-Mar</span>
-                                <span>কাটা<br>Apr-May</span>
-                            </div>
-                        </div>
-                        <div class="simple-text" style="font-size: 13px; color: var(--text-secondary);">
-                            <strong>উৎপাদন:</strong> দেশের ৫০% ধান বোরো ঋতুতে হয়। সেচের ব্যবস্থা থাকতে হবে।
-                        </div>
-                    </div>
-
-                    <!-- Aus Season -->
-                    <div id="aus" class="season-content">
-                        <div class="crop-timeline">
-                            <div class="timeline-header">
-                                <div class="crop-name">আউস ধান (Aus Rice)</div>
-                                <div class="crop-months">এপ্রিল - জুলাই</div>
-                            </div>
-                            <div class="timeline-bar">
-                                <div class="timeline-fill" style="width: 70%; background: linear-gradient(90deg, #FFB74D, #FF8F00)"></div>
-                            </div>
-                            <div class="timeline-labels">
-                                <span>বপন<br>Apr</span>
-                                <span>বৃদ্ধি<br>May-Jun</span>
-                                <span>কাটা<br>Jul</span>
-                            </div>
-                        </div>
-                        <div class="simple-text" style="font-size: 13px; color: var(--text-secondary);">
-                            <strong>উৎপাদন:</strong> বর্ষার পানিতে চাষ হয়। বন্যার ঝুঁকি থাকে।
-                        </div>
-                    </div>
-
-                    <!-- Aman Season -->
-                    <div id="aman" class="season-content">
-                        <div class="crop-timeline">
-                            <div class="timeline-header">
-                                <div class="crop-name">আমন ধান (Aman Rice)</div>
-                                <div class="crop-months">জুলাই - ডিসেম্বর</div>
-                            </div>
-                            <div class="timeline-bar">
-                                <div class="timeline-fill" style="width: 90%; background: linear-gradient(90deg, #81C784, #4CAF50)"></div>
-                            </div>
-                            <div class="timeline-labels">
-                                <span>রোপণ<br>Jul-Aug</span>
-                                <span>বৃদ্ধি<br>Sep-Oct</span>
-                                <span>কাটা<br>Nov-Dec</span>
-                            </div>
-                        </div>
-                        <div class="simple-text" style="font-size: 13px; color: var(--text-secondary);">
-                            <strong>উৎপাদন:</strong> সবচেয়ে বড় ফসল (৪১% উৎপাদন)। বর্ষাকালে চাষ হয়।
-                        </div>
-                    </div>
-
-                    <div class="simple-box">
-                        <div class="simple-title">💡 মনে রাখুন</div>
-                        <div class="simple-text">
-                            <strong>বোরো</strong> = শীতকাল (সেচা), <strong>আউস</strong> = গ্রীষ্ম (বৃষ্টি), <strong>আমন</strong> = বর্ষা (বৃষ্টি)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Soil Guide -->
-                <div class="db-card">
-                    <div class="db-header">
-                        <div class="db-icon">🌱</div>
-                        <div class="db-title">
-                            মাটির গাইড
-                            <span>Soil Guide</span>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; gap: 12px;">
-                        <div class="rule-item">
-                            <div class="rule-number" style="background: #8D6E63;">1</div>
-                            <div class="rule-content">
-                                <div class="rule-title">দোআঁশ মাটি (Loam Soil)</div>
-                                <div class="rule-desc">সবচেয়ে ভালো। পানি ধরে রাখে ও নিষ্কাশন হয়।</div>
-                            </div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-number" style="background: #A1887F;">2</div>
-                            <div class="rule-content">
-                                <div class="rule-title">এঁটেল মাটি (Clay Soil)</div>
-                                <div class="rule-desc">পানি ধরে রাখে। ধান চাষের জন্য উপযোগী।</div>
-                            </div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-number" style="background: #BCAAA4;">3</div>
-                            <div class="rule-content">
-                                <div class="rule-title">বালুকামাটি (Sandy Soil)</div>
-                                <div class="rule-desc">পানি তাড়াতাড়ি নিচে চলে যায়। শাকসবজি চাষের জন্য ভালো।</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom Navigation -->
+        <!-- Bottom Nav -->
         <div class="bottom-nav">
-            <button class="nav-item active" onclick="showPage('home')" id="navHome">
+            <div class="nav-item active" onclick="setPage('home')">
                 <span class="nav-icon">🏠</span>
-                <span>হোম</span>
-            </button>
-            <button class="nav-item" onclick="showPage('camera')" id="navCamera">
+                <span class="nav-label" id="navHome">Home</span>
+            </div>
+            <div class="nav-item" onclick="setPage('camera')">
                 <span class="nav-icon">📷</span>
-                <span>স্ক্যান</span>
-            </button>
-            <button class="nav-item" onclick="showPage('guide')" id="navGuide">
-                <span class="nav-icon">📚</span>
-                <span>গাইড</span>
-            </button>
-        </div>
-
-        <!-- Settings Modal -->
-        <div class="modal" id="settingsModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">⚙️ সেটিংস / Settings</div>
-                    <button class="close-btn" onclick="closeSettings()">✕</button>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h4>ডার্ক মোড / Dark Mode</h4>
-                        <p>গাঢ় থিম ব্যবহার করুন</p>
-                    </div>
-                    <div class="toggle" id="darkToggle" onclick="toggleTheme()">
-                        <div class="toggle-thumb"></div>
-                    </div>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h4>ভাষা / Language</h4>
-                        <p>বাংলা / English</p>
-                    </div>
-                    <div style="font-size: 14px; color: var(--text-secondary);">
-                        বাংলা
-                    </div>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <h4>সাউন্ড / Sound</h4>
-                        <p>অডিও পরামর্শ চালু করুন</p>
-                    </div>
-                    <div class="toggle active" onclick="this.classList.toggle('active')">
-                        <div class="toggle-thumb"></div>
-                    </div>
-                </div>
-
-                <!-- Dev Info Section (Moved to Settings) -->
-                <div class="dev-section">
-                    <div class="dev-avatar">👨‍💻</div>
-                    <div class="dev-name">Developer Information</div>
-                    <div class="dev-role">Plant Doctor App v1.0</div>
-                    <div class="dev-school">
-                        <strong>Developed for:</strong><br>
-                        Bangladesh Agricultural Research<br>
-                        Digital Farming Initiative<br><br>
-                        <small>Data Source: BARI, BRRI, DAE</small>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 24px; color: var(--text-secondary); font-size: 12px;">
-                    © 2024 গাছের ডাক্তার<br>Version 1.0.2
-                </div>
+                <span class="nav-label" id="navCamera">Scan</span>
             </div>
         </div>
     </div>
 
     <script>
-        // State
-        let currentMode = 'identify';
-        let currentPage = 'home';
-        let isDark = false;
+        // DEFAULT API KEYS
+        const DEFAULT_API_KEYS = [
+            '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',
+            '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',
+            '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',
+            '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'
+        ];
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            getWeather();
-            loadTheme();
-        });
+        const MODELS = [
+            { id: 'google/gemini-flash-1.5', name: 'Gemini Vision' },
+            { id: 'openai/gpt-4o-mini', name: 'GPT-4 Vision' },
+            { id: 'google/gemini-flash-1.5', name: 'Gemini Vision 2' },
+            { id: 'openai/gpt-4o-mini', name: 'GPT-4 Vision 2' }
+        ];
 
-        // Navigation
-        function showPage(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(page + 'Page').classList.add('active');
-            
-            if(page === 'home') document.getElementById('navHome').classList.add('active');
-            if(page === 'camera') document.getElementById('navCamera').classList.add('active');
-            if(page === 'guide') document.getElementById('navGuide').classList.add('active');
-            
-            currentPage = page;
-            window.scrollTo(0, 0);
+        let config = {
+            lang: localStorage.getItem('pd_lang') || 'en',
+            theme: localStorage.getItem('pd_theme') || 'light',
+            apiKeys: JSON.parse(localStorage.getItem('pd_api_keys')) || DEFAULT_API_KEYS,
+            mode: localStorage.getItem('pd_mode') || 'identify',
+            location: JSON.parse(localStorage.getItem('pd_location')) || null
+        };
+
+        let currentImage = null;
+        let currentResult = null;
+        let recent = JSON.parse(localStorage.getItem('recent')) || [];
+        let weatherData = null;
+        let speechSynthesis = window.speechSynthesis;
+        let voices = [];
+
+        function loadVoices() {
+            voices = speechSynthesis.getVoices();
         }
-
-        function startScan() {
-            showPage('camera');
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
         }
+        loadVoices();
 
-        // Mode Toggle
-        function setMode(mode) {
-            currentMode = mode;
-            document.querySelectorAll('.mode-chip').forEach(c => c.classList.remove('active'));
-            document.getElementById('mode' + (mode === 'identify' ? 'Identify' : 'Disease')).classList.add('active');
+        const texts = {
+            en: {
+                appTitle: 'Plant Doctor',
+                greeting: 'Welcome, Farmer',
+                mainBtnIdentify: 'Identify Plant',
+                mainBtnDisease: 'Detect Disease',
+                recent: 'Recent Scans',
+                emptyRecent: 'No scans yet. Tap the camera button to start!',
+                txtCamera: 'Take Photo',
+                hintCamera: 'Use camera',
+                txtGallery: 'Upload from Gallery',
+                hintGallery: 'Choose existing photo',
+                analyze: 'Analyze',
+                cancel: 'Cancel',
+                unknown: 'Unknown Plant',
+                unknownDisease: 'Unknown Condition',
+                scientific: 'Scientific name',
+                careTitle: 'Care Instructions',
+                diseaseTitle: 'Analysis Results',
+                water: '💧 Watering',
+                sun: '☀️ Sunlight',
+                fert: '🧪 Fertilizer',
+                temp: '🌡️ Temperature',
+                treatment: '💊 Treatment',
+                prevention: '⚠️ Prevention',
+                back: 'Back to Home',
+                navHome: 'Home',
+                navCamera: 'Scan',
+                settings: 'Settings',
+                save: 'Save Settings',
+                reset: 'Reset to Default',
+                apiLabel1: 'API Key 1 (Primary)',
+                apiLabel2: 'API Key 2 (Backup)',
+                apiDesc: 'Default keys are pre-loaded. Add your own for higher limits.',
+                themeLabel: 'Dark Theme',
+                langLabel: 'Language',
+                loading: 'Analyzing...',
+                loadingSub: 'Analyzing with Weather Context',
+                modeIdentify: 'Identify',
+                modeDisease: 'Disease',
+                diseaseDetected: '⚠️ Disease Detected',
+                plantIdentified: '🌱 Plant Identified',
+                devRole: 'Student Developer',
+                adviceHead: 'Farming Advice',
+                weatherLabel: 'Weather',
+                farmAdviceTitle: 'Farming Recommendation',
+                suitable: 'Suitable for current weather',
+                unsuitable: 'Not suitable for current weather',
+                partial: 'Partially suitable - care needed',
+                helplineTitle: 'Agricultural Helpline',
+                labelHours: 'Hours:',
+                hoursText: '8:00 AM - 8:00 PM (Daily)',
+                labelClosed: 'Closed:',
+                closedText: 'Friday, Saturday & Govt. Holidays',
+                labelCost: 'Cost:',
+                costText: '0.25 Taka/min (excl. VAT) - Very Low Cost',
+                labelService: 'Service:',
+                serviceText: 'Agriculture, Fisheries & Livestock Expert Advice',
+                altServiceText: 'Krishak Bandhu (Farmer Friend) Service. Registration required. Connects you directly to your nearest Agriculture Office for personalized advice.',
+                homeHelplineTitle: '📞 Agricultural Helpline',
+                homeHelpline1: 'Krishi Call Center',
+                homeHelpline2: 'Krishak Bandhu',
+                homeHelplineTime: 'Hours: 8:00 AM - 8:00 PM | Closed: Fri, Sat & Govt. Holidays'
+            },
+            bn: {
+                appTitle: 'গাছের ডাক্তার',
+                greeting: 'স্বাগতম, কৃষক ভাই',
+                mainBtnIdentify: 'গাছ শনাক্ত করুন',
+                mainBtnDisease: 'রোগ সনাক্ত করুন',
+                recent: 'সাম্প্রতিক স্ক্যান',
+                emptyRecent: 'এখনো কোনো স্ক্যান নেই। ক্যামেরা বোতাম টিপুন!',
+                txtCamera: 'ছবি তুলুন',
+                hintCamera: 'ক্যামেরা ব্যবহার করুন',
+                txtGallery: 'গ্যালারি থেকে আপলোড করুন',
+                hintGallery: 'আগের ছবি নির্বাচন করুন',
+                analyze: 'বিশ্লেষণ করুন',
+                cancel: 'বাতিল করুন',
+                unknown: 'অজানা গাছ',
+                unknownDisease: 'অজানা রোগ',
+                scientific: 'বৈজ্ঞানিক নাম',
+                careTitle: 'পরিচর্যা নির্দেশনা',
+                diseaseTitle: 'বিশ্লেষণ ফলাফল',
+                water: '💧 পানি প্রয়োগ',
+                sun: '☀️ সূর্যালোক',
+                fert: '🧪 সার প্রয়োগ',
+                temp: '🌡️ তাপমাত্রা',
+                treatment: '💊 চিকিৎসা',
+                prevention: '⚠️ প্রতিরোধ',
+                back: 'হোমে ফিরে যান',
+                navHome: 'হোম',
+                navCamera: 'স্ক্যান',
+                settings: 'সেটিংস',
+                save: 'সেটিংস সংরক্ষণ করুন',
+                reset: 'ডিফল্টে রিসেট করুন',
+                apiLabel1: 'এপিআই কী ১ (প্রাথমিক)',
+                apiLabel2: 'এপিআই কী ২ (ব্যাকআপ)',
+                apiDesc: 'ডিফল্ট কী প্রি-লোড করা আছে। বেশি লিমিটের জন্য নিজের কী ব্যবহার করুন।',
+                themeLabel: 'ডার্ক থিম',
+                langLabel: 'ভাষা',
+                loading: 'বিশ্লেষণ করা হচ্ছে...',
+                loadingSub: 'আবহাওয়ার প্রেক্ষাপটে বিশ্লেষণ',
+                modeIdentify: 'শনাক্তকরণ',
+                modeDisease: 'রোগ সনাক্তকরণ',
+                diseaseDetected: '⚠️ রোগ সনাক্ত হয়েছে',
+                plantIdentified: '🌱 গাছ শনাক্ত হয়েছে',
+                devRole: 'ছাত্র ডেভেলপার',
+                adviceHead: 'কৃষি পরামর্শ',
+                weatherLabel: 'আবহাওয়া',
+                farmAdviceTitle: 'কৃষি সুপারিশ',
+                suitable: 'বর্তমান আবহাওয়ার জন্য উপযুক্ত',
+                unsuitable: 'বর্তমান আবহাওয়ার জন্য অনুপযুক্ত',
+                partial: 'আংশিক উপযুক্ত - যত্ন প্রয়োজন',
+                helplineTitle: 'কৃষি হেল্পলাইন',
+                labelHours: 'সময়:',
+                hoursText: 'সকাল ৮:০০টা - রাত ৮:০০টা (প্রতিদিন)',
+                labelClosed: 'ছুটি:',
+                closedText: 'শুক্রবার, শনিবার ও সরকারি ছুটি',
+                labelCost: 'খরচ:',
+                costText: 'প্রতি মিনিটে ২৫ পয়সা (ভ্যাট ব্যতীত) - খুব কম খরচ',
+                labelService: 'সেবা:',
+                serviceText: 'কৃষি, মৎস্য ও প্রাণিসম্পদ বিশেষজ্ঞ পরামর্শ',
+                altServiceText: 'কৃষক বন্ধু সেবা (৩৩৩১)। রেজিস্ট্রেশন প্রয়োজন। আপনার নিকটস্থ কৃষি অফিসের সাথে সরাসরি সংযোগ করে ব্যক্তিগত পরামর্শ প্রদান করে।',
+                homeHelplineTitle: '📞 কৃষি হেল্পলাইন',
+                homeHelpline1: 'কৃষি কল সেন্টার',
+                homeHelpline2: 'কৃষক বন্ধু',
+                homeHelplineTime: 'সময়: সকাল ৮টা - রাত ৮টা | ছুটি: শুক্র, শনি ও সরকারি ছুটি'
+            }
+        };
+
+        function init() {
+            if (config.apiKeys[0]) document.getElementById('apiKey1').value = config.apiKeys[0];
+            if (config.apiKeys[1]) document.getElementById('apiKey2').value = config.apiKeys[1];
             
-            const scanText = document.querySelector('.scan-text');
-            if(mode === 'identify') {
-                scanText.innerHTML = 'গাছ স্ক্যান করুন<small>Identify Plant</small>';
+            if (config.theme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeSwitch').classList.add('active');
+                document.getElementById('themeBtn').textContent = '☀️';
+            }
+            
+            // Set initial language
+            setLang(config.lang, false);
+            setMode(config.mode, false);
+            loadRecent();
+            updateApiStatus();
+            
+            // Load weather
+            if (config.location) {
+                fetchWeather(config.location.lat, config.location.lon, config.location.name);
             } else {
-                scanText.innerHTML = 'রোগ সনাক্ত করুন<small>Detect Disease</small>';
+                getLocationAndWeather();
             }
         }
 
-        // Image Handling
-        function handleImage(event) {
-            const file = event.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('resultImage').src = e.target.result;
-                    showLoading();
-                    setTimeout(() => {
-                        hideLoading();
-                        showResult();
-                    }, 2000);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function showLoading() {
-            document.getElementById('loading').classList.add('show');
-        }
-
-        function hideLoading() {
-            document.getElementById('loading').classList.remove('show');
-        }
-
-        function showResult() {
-            showPage('result');
-            // Simulate result based on mode
-            if(currentMode === 'identify') {
-                document.getElementById('resultTitle').textContent = 'ধান গাছ (Rice Plant)';
-                document.getElementById('resultSubtitle').textContent = 'Oryza sativa';
-                document.getElementById('confidenceText').textContent = '৯৮% নির্ভুলতা';
-                document.getElementById('fertilizer').textContent = 'ইউরিয়া: ২৫০ কেজি/হেক্টর';
-                document.getElementById('irrigation').textContent = 'সপ্তাহে ২-৩ বার সেচ';
-                document.getElementById('warning').textContent = 'বীজতলা থেকে রোপণের সময় সতর্ক থাকুন';
-                document.getElementById('simpleExplain').textContent = 'এটি আমাদের দেশের প্রধান খাদ্য শস্য। মার্চ-এপ্রিল মাসে রোপণ করে জুলাই-আগস্টে ফলন হয়।';
+        function updateApiStatus() {
+            const status = document.getElementById('apiStatus');
+            const isCustom = config.apiKeys[0] !== DEFAULT_API_KEYS[0];
+            
+            if (config.lang === 'bn') {
+                status.textContent = isCustom ? 'কাস্টম এপিআই সক্রিয়' : 'মাল্টি-এআই সিস্টেম প্রস্তুত';
             } else {
-                document.getElementById('resultTitle').textContent = 'ধান পাতা পোড়া রোগ';
-                document.getElementById('resultSubtitle').textContent = 'Rice Blast Disease';
-                document.getElementById('confidenceText').textContent = '৯৫% নির্ভুলতা';
-                document.getElementById('fertilizer').textContent = 'পটাশ সার বেশি দিন, নাইট্রোজেন কম দিন';
-                document.getElementById('irrigation').textContent = 'অতিরিক্ত পানি দেবেন না';
-                document.getElementById('warning').textContent = 'রোগাক্রান্ত পাতা পুড়ে ফেলুন';
-                document.getElementById('simpleExplain').textContent = 'এটি ছত্রাক দ্বারা হয়। পাতায় বাদামি দাগ পড়ে। ট্রাইসাইকলাজল স্প্রে করুন (২ মিলি/লিটার পানি)।';
+                status.textContent = isCustom ? 'Custom API Active' : 'Multi-AI System Ready';
             }
         }
 
-        // Weather
-        function getWeather() {
-            if(navigator.geolocation) {
+        function getLocationAndWeather() {
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    position => {
-                        const lat = position.coords.latitude;
-                        const lon = position.coords.longitude;
-                        fetchWeather(lat, lon);
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        fetchWeather(latitude, longitude);
                     },
-                    error => {
-                        document.getElementById('weatherDesc').textContent = 'ঢাকা (Default)';
-                        fetchWeather(23.8103, 90.4125);
+                    (error) => {
+                        console.error('Geolocation error:', error);
+                        fetchWeather(23.8103, 90.4125, 'Dhaka');
                     }
                 );
+            } else {
+                fetchWeather(23.8103, 90.4125, 'Dhaka');
             }
         }
 
-        function fetchWeather(lat, lon) {
-            // Simulated weather data for Bangladesh
-            const temps = [28, 30, 32, 29, 31, 33, 30];
-            const conditions = ['মেঘলা', 'রোদ', 'বৃষ্টির সম্ভাবনা', 'আংশিক মেঘলা'];
-            const icons = ['☁️', '☀️', '🌧️', '⛅'];
-            
-            const randomTemp = temps[Math.floor(Math.random() * temps.length)];
-            const randomCond = Math.floor(Math.random() * conditions.length);
-            
-            document.getElementById('currentTemp').textContent = randomTemp + '°C';
-            document.getElementById('weatherDesc').textContent = conditions[randomCond];
-            document.getElementById('weatherIcon').textContent = icons[randomCond];
+        async function fetchWeather(lat, lon, locationName) {
+            try {
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&timezone=auto&forecast_days=7`);
+                const data = await response.json();
+                
+                weatherData = {
+                    temp: Math.round(data.current.temperature_2m),
+                    humidity: data.current.relative_humidity_2m,
+                    wind: data.current.wind_speed_10m,
+                    feelsLike: Math.round(data.current.apparent_temperature),
+                    code: data.current.weather_code,
+                    location: locationName || 'Current Location',
+                    lat: lat,
+                    lon: lon,
+                    daily: data.daily
+                };
+                
+                config.location = { lat, lon, name: weatherData.location };
+                localStorage.setItem('pd_location', JSON.stringify(config.location));
+                
+                updateWeatherUI();
+                updateFarmingAdvice();
+                render7DayForecast();
+            } catch (error) {
+                console.error('Weather fetch error:', error);
+                document.getElementById('weatherDesc').textContent = config.lang === 'bn' ? 'আবহাওয়া লোড করা যায়নি' : 'Weather unavailable';
+            }
         }
 
-        // Season Tabs
-        function showSeason(season) {
-            document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.season-content').forEach(c => c.classList.remove('active'));
+        function getWeatherEmoji(code) {
+            if (code <= 1) return '☀️';
+            if (code <= 3) return '🌤️';
+            if (code <= 48) return '☁️';
+            if (code <= 67) return '🌧️';
+            if (code <= 77) return '🌨️';
+            if (code <= 82) return '🌦️';
+            if (code <= 99) return '⛈️';
+            return '🌡️';
+        }
+
+        function getWeatherDesc(code) {
+            const descs = {
+                0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
+                45: 'Foggy', 48: 'Depositing rime fog', 51: 'Light drizzle',
+                53: 'Moderate drizzle', 55: 'Dense drizzle', 61: 'Slight rain',
+                63: 'Moderate rain', 65: 'Heavy rain', 80: 'Rain showers',
+                95: 'Thunderstorm'
+            };
+            return descs[code] || 'Unknown';
+        }
+
+        function getWeatherDescBN(code) {
+            const descs = {
+                0: 'পরিষ্কার আকাশ', 1: 'প্রধানত পরিষ্কার', 2: 'আংশিক মেঘলা', 3: 'মেঘলা',
+                45: 'কুয়াশা', 48: 'তুষার কুয়াশা', 51: 'হালকা গুঁড়ি গুঁড়ি বৃষ্টি',
+                53: 'মাঝারি গুঁড়ি গুঁড়ি বৃষ্টি', 55: 'ভারী গুঁড়ি গুঁড়ি বৃষ্টি',
+                61: 'হালকা বৃষ্টি', 63: 'মাঝারি বৃষ্টি', 65: 'ভারী বৃষ্টি',
+                80: 'বৃষ্টিপাত', 95: 'বজ্রঝড়'
+            };
+            return descs[code] || 'অজানা';
+        }
+
+        function updateWeatherUI() {
+            if (!weatherData) return;
             
-            event.target.classList.add('active');
-            document.getElementById(season).classList.add('active');
+            const isBN = config.lang === 'bn';
+            const emoji = getWeatherEmoji(weatherData.code);
+            const desc = isBN ? getWeatherDescBN(weatherData.code) : getWeatherDesc(weatherData.code);
+            
+            document.getElementById('weatherIcon').textContent = emoji;
+            document.getElementById('weatherTemp').textContent = weatherData.temp + '°';
+            document.getElementById('weatherDesc').textContent = desc;
+            document.getElementById('locName').textContent = weatherData.location;
+            document.getElementById('weatherHumidity').textContent = `${weatherData.humidity}% ${isBN ? 'আর্দ্রতা' : 'Humidity'}`;
+            
+            document.getElementById('detailIcon').textContent = emoji;
+            document.getElementById('detailTemp').textContent = weatherData.temp + '°C';
+            document.getElementById('detailDesc').textContent = desc;
+            document.getElementById('detailLoc').textContent = weatherData.location;
+            document.getElementById('detailHumidity').textContent = weatherData.humidity + '%';
+            document.getElementById('detailWind').textContent = weatherData.wind + ' km/h';
+            document.getElementById('detailFeels').textContent = weatherData.feelsLike + '°';
+            
+            const hour = new Date().getHours();
+            let uv = 0;
+            if (weatherData.code <= 3 && hour >= 10 && hour <= 16) uv = Math.floor(Math.random() * 5) + 5;
+            else if (weatherData.code <= 3) uv = Math.floor(Math.random() * 3) + 2;
+            document.getElementById('detailUV').textContent = uv;
         }
 
-        // Phone Call
-        function callNumber(number) {
-            window.location.href = 'tel:' + number;
+        function render7DayForecast() {
+            if (!weatherData || !weatherData.daily) return;
+            
+            const container = document.getElementById('detailForecastContainer');
+            const days = weatherData.daily;
+            const isBN = config.lang === 'bn';
+            
+            let html = '';
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(days.time[i]);
+                const dayName = isBN ? 
+                    ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'][date.getDay()] :
+                    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+                const icon = getWeatherEmoji(days.weather_code[i]);
+                const maxTemp = Math.round(days.temperature_2m_max[i]);
+                const minTemp = Math.round(days.temperature_2m_min[i]);
+                const rainProb = days.precipitation_probability_max[i];
+                
+                html += `
+                    <div class="forecast-day">
+                        <div class="forecast-day-name">${i === 0 ? (isBN ? 'আজ' : 'Today') : dayName}</div>
+                        <div class="forecast-icon">${icon}</div>
+                        <div class="forecast-temp">${maxTemp}° / ${minTemp}°</div>
+                        <div class="forecast-rain">
+                            ${rainProb > 0 ? '💧 ' + rainProb + '%' : '☀️ 0%'}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (container) container.innerHTML = html;
         }
 
-        // Theme
+        function updateFarmingAdvice() {
+            if (!weatherData) return;
+            
+            let advice = '';
+            const isBangla = config.lang === 'bn';
+            const next3DaysRain = weatherData.daily.precipitation_probability_max.slice(0, 3);
+            const hasHighRainChance = next3DaysRain.some(p => p > 60);
+            
+            if (weatherData.code >= 61) {
+                advice = isBangla 
+                    ? "বৃষ্টির সময় বাইরে সার প্রয়োগ করা থেকে বিরত থাকুন। গাছের পাতা থেকে অতিরিক্ত পানি সরিয়ে দিন যাতে ছত্রাক রোগ না হয়।"
+                    : "Avoid applying fertilizer during rain. Ensure proper drainage.";
+            } else if (weatherData.temp > 35) {
+                advice = isBangla
+                    ? "তীব্র গরমে সকালে বা সন্ধ্যায় সেচ দিন। গাছের গোড়ায় পানি দিন, পাতায় নয়।"
+                    : "Water early morning or evening during extreme heat.";
+            } else if (weatherData.humidity > 80) {
+                advice = isBangla
+                    ? "আর্দ্রতা বেশি - ছত্রাক রোগ প্রতিরোধে বায়ুচলাচল ভালো রাখুন।"
+                    : "High humidity - ensure good air circulation.";
+            } else if (hasHighRainChance) {
+                advice = isBangla
+                    ? "আগামী কয়েক দিনে বৃষ্টির সম্ভাবনা রয়েছে। সার প্রয়োগ স্থগিত রাখুন।"
+                    : "Rain expected soon. Postpone fertilizer application.";
+            } else {
+                advice = isBangla
+                    ? "আবহাওয়া অনুকূল। সার প্রয়োগ বা কীটনাশক স্প্রে করার জন্য ভালো সময়।"
+                    : "Weather is favorable. Good time for farming activities.";
+            }
+            
+            const farmAdviceText = document.getElementById('farmAdviceText');
+            if (farmAdviceText) farmAdviceText.textContent = advice;
+        }
+
+        function showWeatherDetail() {
+            setPage('weather');
+        }
+
+        function speakResult() {
+            if (!currentResult) return;
+            
+            const name = config.lang === 'bn' && currentResult.nameBn ? currentResult.nameBn : currentResult.name;
+            const scientific = currentResult.scientific || '';
+            const desc = currentResult.description || '';
+            
+            let textToSpeak = `${name}. ${scientific}. ${desc}`;
+            if (currentResult.weatherSuitability) {
+                textToSpeak += ` Weather suitability: ${currentResult.weatherSuitability}`;
+            }
+            
+            speak(textToSpeak);
+        }
+
+        function speakCare() {
+            if (!currentResult) return;
+            
+            const t = texts[config.lang];
+            let textToSpeak = '';
+            
+            if (config.mode === 'identify') {
+                textToSpeak = `${t.water}: ${currentResult.watering || 'Not available'}. ${t.sun}: ${currentResult.sunlight || 'Not available'}. ${t.fert}: ${currentResult.fertilizer || 'Not available'}. ${t.temp}: ${currentResult.temperature || 'Not available'}`;
+                if (currentResult.weatherAdvice) {
+                    textToSpeak += `. Weather advice: ${currentResult.weatherAdvice}`;
+                }
+            } else {
+                textToSpeak = `${t.treatment}: ${currentResult.treatment || 'Not available'}. ${t.prevention}: ${currentResult.prevention || 'Not available'}`;
+            }
+            
+            speak(textToSpeak);
+        }
+
+        function speak(text) {
+            if (!speechSynthesis) {
+                showToast(config.lang === 'bn' ? 'আপনার ব্রাউজারে TTS সমর্থিত নয়' : 'TTS not supported');
+                return;
+            }
+            
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            const langCode = config.lang === 'bn' ? 'bn' : 'en';
+            const voice = voices.find(v => v.lang.includes(langCode)) || voices[0];
+            if (voice) utterance.voice = voice;
+            
+            utterance.lang = config.lang === 'bn' ? 'bn-BD' : 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        function setLang(lang, save = true) {
+            config.lang = lang;
+            if (save) localStorage.setItem('pd_lang', lang);
+            
+            const t = texts[lang];
+            
+            // Update ALL text elements
+            document.getElementById('appTitle').textContent = t.appTitle;
+            document.getElementById('greeting').textContent = t.greeting;
+            document.getElementById('mainBtnText').textContent = config.mode === 'identify' ? t.mainBtnIdentify : t.mainBtnDisease;
+            document.getElementById('recentTitle').textContent = t.recent;
+            document.getElementById('emptyRecent').innerHTML = `<div class="empty-icon">🌱</div><div>${t.emptyRecent}</div>`;
+            
+            // Camera page
+            document.getElementById('txtCamera').textContent = t.txtCamera;
+            document.getElementById('hintCamera').textContent = t.hintCamera;
+            document.getElementById('txtGallery').textContent = t.txtGallery;
+            document.getElementById('hintGallery').textContent = t.hintGallery;
+            document.getElementById('analyzeText').textContent = t.analyze;
+            document.getElementById('cancelBtn').textContent = t.cancel;
+            
+            // Result page
+            document.getElementById('resName').textContent = config.mode === 'identify' ? t.unknown : t.unknownDisease;
+            document.getElementById('resSci').textContent = t.scientific + ': -';
+            document.getElementById('careTitle').textContent = config.mode === 'identify' ? t.careTitle : t.diseaseTitle;
+            document.getElementById('backBtn').textContent = t.back;
+            
+            // Nav
+            document.getElementById('navHome').textContent = t.navHome;
+            document.getElementById('navCamera').textContent = t.navCamera;
+            
+            // Settings
+            document.getElementById('settingsTitle').textContent = t.settings;
+            document.getElementById('saveBtn').textContent = t.save;
+            document.getElementById('resetBtn').textContent = t.reset;
+            document.getElementById('apiLabel1').textContent = t.apiLabel1;
+            document.getElementById('apiLabel2').textContent = t.apiLabel2;
+            document.getElementById('apiDesc').textContent = t.apiDesc;
+            document.getElementById('themeLabel').textContent = t.themeLabel;
+            document.getElementById('langLabel').textContent = t.langLabel;
+            document.getElementById('loadingText').textContent = t.loading;
+            document.getElementById('loadingSub').textContent = t.loadingSub;
+            document.getElementById('txtIdentify').textContent = t.modeIdentify;
+            document.getElementById('txtDisease').textContent = t.modeDisease;
+            document.getElementById('devRole').textContent = t.devRole;
+            document.getElementById('weatherLabel').textContent = t.weatherLabel;
+            document.getElementById('farmAdviceTitle').textContent = t.farmAdviceTitle;
+            
+            // Home helpline section
+            document.getElementById('homeHelplineTitle').textContent = t.homeHelplineTitle;
+            document.getElementById('homeHelpline1').textContent = t.homeHelpline1;
+            document.getElementById('homeHelpline2').textContent = t.homeHelpline2;
+            document.getElementById('homeHelplineTime').textContent = t.homeHelplineTime;
+            
+            // Settings helpline section
+            document.getElementById('helplineTitle').textContent = t.helplineTitle;
+            document.getElementById('labelHours').textContent = t.labelHours;
+            document.getElementById('hoursText').textContent = t.hoursText;
+            document.getElementById('labelClosed').textContent = t.labelClosed;
+            document.getElementById('closedText').textContent = t.closedText;
+            document.getElementById('labelCost').textContent = t.labelCost;
+            document.getElementById('costText').textContent = t.costText;
+            document.getElementById('labelService').textContent = t.labelService;
+            document.getElementById('serviceText').textContent = t.serviceText;
+            document.getElementById('altServiceText').textContent = t.altServiceText;
+            
+            updateCareLabels();
+            updateApiStatus();
+            loadRecent();
+            updateWeatherUI();
+            render7DayForecast();
+            updateFarmingAdvice();
+            
+            // Update language buttons
+            document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+            document.getElementById('btnBn').classList.toggle('active', lang === 'bn');
+        }
+
+        function updateCareLabels() {
+            const t = texts[config.lang];
+            document.getElementById('label1').textContent = t.water;
+            document.getElementById('label2').textContent = t.sun;
+            document.getElementById('label3').textContent = t.fert;
+            document.getElementById('label4').textContent = t.temp;
+            document.getElementById('labelTreatment').textContent = t.treatment;
+            document.getElementById('labelPrevention').textContent = t.prevention;
+        }
+
+        function setMode(mode, save = true) {
+            config.mode = mode;
+            if (save) localStorage.setItem('pd_mode', mode);
+            
+            const t = texts[config.lang];
+            
+            document.getElementById('modeIdentify').classList.toggle('active', mode === 'identify');
+            document.getElementById('modeDisease').classList.toggle('active', mode === 'disease');
+            
+            document.getElementById('mainBtnText').textContent = mode === 'identify' ? t.mainBtnIdentify : t.mainBtnDisease;
+            document.getElementById('mainIcon').textContent = mode === 'identify' ? '📷' : '🔬';
+        }
+
         function toggleTheme() {
-            isDark = !isDark;
-            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
-            document.getElementById('darkToggle').classList.toggle('active');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-
-        function loadTheme() {
-            const saved = localStorage.getItem('theme');
-            if(saved === 'dark') {
-                isDark = true;
-                document.documentElement.setAttribute('data-theme', 'dark');
+            const newTheme = config.theme === 'light' ? 'dark' : 'light';
+            config.theme = newTheme;
+            localStorage.setItem('pd_theme', newTheme);
+            
+            if (newTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeSwitch').classList.add('active');
                 document.getElementById('themeBtn').textContent = '☀️';
-                document.getElementById('darkToggle').classList.add('active');
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1B5E20');
+            } else {
+                document.body.removeAttribute('data-theme');
+                document.getElementById('themeSwitch').classList.remove('active');
+                document.getElementById('themeBtn').textContent = '🌙';
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#2E7D32');
             }
         }
 
-        // Settings Modal
-        function openSettings() {
-            document.getElementById('settingsModal').classList.add('show');
+        function setPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const pageId = page + 'Page';
+            const pageElement = document.getElementById(pageId);
+            if (pageElement) pageElement.classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if (page === 'home') document.querySelectorAll('.nav-item')[0].classList.add('active');
+            else if (page === 'camera') document.querySelectorAll('.nav-item')[1].classList.add('active');
+            
+            if (page !== 'camera') {
+                setTimeout(resetUpload, 300);
+            }
+            
+            if (page === 'home' && weatherData) {
+                updateWeatherUI();
+            }
         }
 
-        function closeSettings() {
-            document.getElementById('settingsModal').classList.remove('show');
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            panel.classList.toggle('show');
+            if (panel.classList.contains('show')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         }
 
-        // Toast
-        function showToast(message) {
+        function saveSettings() {
+            const key1 = document.getElementById('apiKey1').value.trim();
+            const key2 = document.getElementById('apiKey2').value.trim();
+            
+            config.apiKeys = [key1 || DEFAULT_API_KEYS[0], key2 || DEFAULT_API_KEYS[1]];
+            localStorage.setItem('pd_api_keys', JSON.stringify(config.apiKeys));
+            updateApiStatus();
+            toggleSettings();
+            
+            const msg = config.lang === 'bn' ? 'সেটিংস সংরক্ষিত!' : 'Settings saved!';
+            showToast(msg);
+        }
+
+        function resetApiKeys() {
+            config.apiKeys = DEFAULT_API_KEYS;
+            document.getElementById('apiKey1').value = DEFAULT_API_KEYS[0];
+            document.getElementById('apiKey2').value = DEFAULT_API_KEYS[1];
+            localStorage.setItem('pd_api_keys', JSON.stringify(config.apiKeys));
+            updateApiStatus();
+            
+            const msg = config.lang === 'bn' ? 'ডিফল্টে রিসেট করা হয়েছে' : 'Reset to default';
+            showToast(msg);
+        }
+
+        function openCamera() {
+            document.getElementById('cameraInput').click();
+        }
+
+        function openGallery() {
+            document.getElementById('galleryInput').click();
+        }
+
+        function handleImage(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                currentImage = event.target.result;
+                document.getElementById('previewImg').src = currentImage;
+                document.getElementById('previewBox').classList.add('show');
+                document.querySelector('.upload-options').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetUpload() {
+            currentImage = null;
+            document.getElementById('previewBox').classList.remove('show');
+            document.querySelector('.upload-options').style.display = 'flex';
+            document.getElementById('cameraInput').value = '';
+            document.getElementById('galleryInput').value = '';
+        }
+
+        async function callOpenRouter(apiKey, model, messages) {
+            const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json',
+                    'HTTP-Referer': window.location.href,
+                    'X-Title': 'Plant Doctor'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: messages,
+                    temperature: 0.7,
+                    max_tokens: 2000
+                })
+            });
+            
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            return data.choices[0].message.content;
+        }
+
+        function getWeatherSummaryForAI() {
+            if (!weatherData) return '';
+            
+            const isBN = config.lang === 'bn';
+            const current = `${weatherData.temp}°C, ${isBN ? getWeatherDescBN(weatherData.code) : getWeatherDesc(weatherData.code)}, ${weatherData.humidity}% humidity`;
+            
+            const next7Days = weatherData.daily.time.slice(0, 7).map((time, i) => {
+                const date = new Date(time);
+                const day = isBN ? 
+                    ['আজ', 'আগামীকাল', 'পরশু'][i] || date.toLocaleDateString('bn-BD', {weekday: 'short'}) :
+                    ['Today', 'Tomorrow', date.toLocaleDateString('en-US', {weekday: 'short'})][i] || date.toLocaleDateString('en-US', {weekday: 'short'});
+                const rainProb = weatherData.daily.precipitation_probability_max[i];
+                const rainSum = weatherData.daily.precipitation_sum[i];
+                return `${day}: ${rainProb}% rain chance, ${rainSum}mm expected`;
+            }).join('; ');
+            
+            return `Current Weather: ${current}. 7-Day Forecast: ${next7Days}`;
+        }
+
+        async function analyzeImage() {
+            if (!currentImage) return;
+            
+            document.getElementById('loading').classList.add('show');
+            
+            try {
+                const base64 = currentImage.split(',')[1];
+                const t = texts[config.lang];
+                const weatherContext = getWeatherSummaryForAI();
+                
+                let prompt;
+                if (config.mode === 'identify') {
+                    prompt = config.lang === 'bn' 
+                        ? `এই গাছের ছবি দেখে বলুন: 1. নাম (বাংলা এবং ইংরেজি), 2. বৈজ্ঞানিক নাম, 3. বিবরণ, 4. কিভাবে পানি দিতে হবে, 5. সূর্যালোকের প্রয়োজন, 6. সারের পরামর্শ, 7. তাপমাত্রা। 
+                        অতিরিক্ত: বর্তমান আবহাওয়া ${weatherContext} বিবেচনা করে 8. weatherSuitability (Suitable/Partially Suitable/Not Suitable), 9. weatherAdvice (আবহাওয়া অনুযায়ী বিশেষ পরামর্শ - বাংলায়), 10. forecastAdjustment (আগামী ৭ দিনের পূর্বাভাস অনুযায়ী কী করতে হবে - বাংলায়)। 
+                        JSON ফরম্যাটে দিন: {"name", "nameBn", "scientific", "description", "watering", "sunlight", "fertilizer", "temperature", "weatherSuitability", "weatherAdvice", "forecastAdjustment"}`
+                        
+                        : `Identify this plant and provide: 1. Common name, 2. Local name, 3. Scientific name, 4. Brief description, 5. Watering instructions, 6. Sunlight needs, 7. Fertilizer recommendations, 8. Temperature range.
+                        Additional considering current weather ${weatherContext}: 9. weatherSuitability (Suitable/Partially Suitable/Not Suitable), 10. weatherAdvice (specific care adjustments), 11. forecastAdjustment (actions based on 7-day forecast).
+                        Return as JSON: {"name", "nameBn", "scientific", "description", "watering", "sunlight", "fertilizer", "temperature", "weatherSuitability", "weatherAdvice", "forecastAdjustment"}`;
+                } else {
+                    prompt = config.lang === 'bn'
+                        ? `এই গাছের ছবি দেখে রোগ সনাক্ত করুন: 1. রোগের নাম (বাংলা এবং ইংরেজি), 2. বৈজ্ঞানিক নাম, 3. রোগের বিবরণ, 4. মাত্রা (Low/Medium/High), 5. লক্ষণসমূহ, 6. চিকিৎসা, 7. প্রতিরোধের উপায়, 8. কারণসমূহ। 
+                        আবহাওয়া ${weatherContext} বিবেচনা করে 9. weatherImpact (কীভাবে বর্তমান আবহাওয়া রোগকে প্রভাবিত করতে পারে)। 
+                        JSON ফরম্যাটে দিন: {"name", "nameBn", "scientific", "description", "severity", "symptoms", "treatment", "prevention", "causes", "weatherImpact"}`
+                        
+                        : `Analyze this plant image for diseases: 1. Disease name, 2. Local name, 3. Scientific name, 4. Description, 5. Severity (Low/Medium/High), 6. Symptoms, 7. Treatment, 8. Prevention, 9. Causes.
+                        Additional: 10. weatherImpact (how current weather ${weatherContext} might affect disease).
+                        Return as JSON: {"name", "nameBn", "scientific", "description", "severity", "symptoms", "treatment", "prevention", "causes", "weatherImpact"}`;
+                }
+                
+                let result = null;
+                let lastError = null;
+                
+                for (let i = 0; i < config.apiKeys.length; i++) {
+                    try {
+                        const model = MODELS[i % MODELS.length];
+                        const content = [
+                            { type: 'text', text: prompt },
+                            { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${base64}` }}
+                        ];
+                        
+                        const response = await callOpenRouter(
+                            config.apiKeys[i], 
+                            model.id, 
+                            [{ role: 'user', content: content }]
+                        );
+                        
+                        try {
+                            const jsonMatch = response.match(/\{[\s\S]*\}/);
+                            result = JSON.parse(jsonMatch ? jsonMatch[0] : response);
+                            break;
+                        } catch (e) {
+                            if (config.mode === 'identify') {
+                                result = {
+                                    name: response.match(/name["\s:]+([^",\n}]+)/i)?.[1] || t.unknown,
+                                    nameBn: response.match(/nameBn["\s:]+([^",\n}]+)/i)?.[1] || '',
+                                    scientific: response.match(/scientific["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    description: response.match(/description["\s:]+([^",\n}]+)/i)?.[1] || '',
+                                    watering: response.match(/watering["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    sunlight: response.match(/sunlight["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    fertilizer: response.match(/fertilizer["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    temperature: response.match(/temperature["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    weatherSuitability: response.match(/weatherSuitability["\s:]+([^",\n}]+)/i)?.[1] || 'Unknown',
+                                    weatherAdvice: response.match(/weatherAdvice["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    forecastAdjustment: response.match(/forecastAdjustment["\s:]+([^",\n}]+)/i)?.[1] || '-'
+                                };
+                            } else {
+                                result = {
+                                    name: response.match(/name["\s:]+([^",\n}]+)/i)?.[1] || t.unknownDisease,
+                                    nameBn: response.match(/nameBn["\s:]+([^",\n}]+)/i)?.[1] || '',
+                                    scientific: response.match(/scientific["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    description: response.match(/description["\s:]+([^",\n}]+)/i)?.[1] || '',
+                                    severity: response.match(/severity["\s:]+([^",\n}]+)/i)?.[1] || 'Medium',
+                                    symptoms: response.match(/symptoms["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    treatment: response.match(/treatment["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    prevention: response.match(/prevention["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    causes: response.match(/causes["\s:]+([^",\n}]+)/i)?.[1] || '-',
+                                    weatherImpact: response.match(/weatherImpact["\s:]+([^",\n}]+)/i)?.[1] || '-'
+                                };
+                            }
+                            break;
+                        }
+                    } catch (err) {
+                        lastError = err;
+                        continue;
+                    }
+                }
+                
+                if (!result) throw lastError || new Error('All APIs failed');
+                
+                currentResult = result;
+                showResult(result);
+                
+                recent.unshift({
+                    ...result, 
+                    image: currentImage, 
+                    time: Date.now(),
+                    mode: config.mode
+                });
+                recent = recent.slice(0, 10);
+                localStorage.setItem('recent', JSON.stringify(recent));
+                loadRecent();
+                
+            } catch (error) {
+                console.error(error);
+                const msg = config.lang === 'bn' 
+                    ? 'ত্রুটি হয়েছে। সেটিংসে API কী চেক করুন।' 
+                    : 'Error analyzing. Check API keys in Settings.';
+                showToast(msg);
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        function showResult(result) {
+            const t = texts[config.lang];
+            document.getElementById('resultImg').src = currentImage;
+            
+            const displayName = config.lang === 'bn' && result.nameBn 
+                ? result.nameBn 
+                : result.name;
+                
+            document.getElementById('resName').textContent = displayName || (config.mode === 'identify' ? t.unknown : t.unknownDisease);
+            document.getElementById('resSci').textContent = t.scientific + ': ' + (result.scientific || '-');
+            document.getElementById('resDesc').textContent = result.description || '';
+            
+            const card = document.getElementById('resultCard');
+            
+            if (config.mode === 'identify') {
+                card.classList.remove('disease');
+                document.getElementById('plantUI').style.display = 'block';
+                document.getElementById('diseaseUI').style.display = 'none';
+                document.getElementById('treatmentContainer').style.display = 'none';
+                document.getElementById('careContainer').style.display = 'grid';
+                
+                const suitUI = document.getElementById('weatherSuitabilityUI');
+                const suitBadge = document.getElementById('suitabilityBadge');
+                const suitAdvice = document.getElementById('weatherAdvice');
+                
+                if (result.weatherSuitability) {
+                    suitUI.style.display = 'block';
+                    const suitability = result.weatherSuitability.toLowerCase();
+                    let badgeText = result.weatherSuitability;
+                    let badgeClass = '';
+                    
+                    if (suitability.includes('not')) {
+                        badgeText = t.unsuitable;
+                        badgeClass = 'unsuitable';
+                    } else if (suitability.includes('partial')) {
+                        badgeText = t.partial;
+                        badgeClass = 'partial';
+                    } else {
+                        badgeText = t.suitable;
+                        badgeClass = 'suitable';
+                    }
+                    
+                    suitBadge.innerHTML = `🌦️ <span class="${badgeClass}">${badgeText}</span>`;
+                    suitAdvice.textContent = result.weatherAdvice || '';
+                } else {
+                    suitUI.style.display = 'none';
+                }
+                
+                document.getElementById('plantBadge').textContent = t.plantIdentified;
+                
+                document.getElementById('care1').textContent = result.watering || '-';
+                document.getElementById('care2').textContent = result.sunlight || '-';
+                document.getElementById('care3').textContent = result.fertilizer || '-';
+                document.getElementById('care4').textContent = result.temperature || '-';
+                
+                const weatherCareItem = document.getElementById('weatherCareItem');
+                const forecastCareItem = document.getElementById('forecastCareItem');
+                
+                if (result.weatherAdvice) {
+                    weatherCareItem.style.display = 'block';
+                    document.getElementById('weatherCare').textContent = result.weatherAdvice;
+                } else {
+                    weatherCareItem.style.display = 'none';
+                }
+                
+                if (result.forecastAdjustment) {
+                    forecastCareItem.style.display = 'block';
+                    document.getElementById('forecastCare').textContent = result.forecastAdjustment;
+                } else {
+                    forecastCareItem.style.display = 'none';
+                }
+                
+                document.getElementById('careItem3').style.display = 'block';
+                document.getElementById('careItem4').style.display = 'block';
+                
+            } else {
+                card.classList.add('disease');
+                document.getElementById('plantUI').style.display = 'none';
+                document.getElementById('diseaseUI').style.display = 'block';
+                document.getElementById('treatmentContainer').style.display = 'block';
+                document.getElementById('careContainer').style.display = 'grid';
+                document.getElementById('weatherSuitabilityUI').style.display = 'none';
+                
+                const severity = (result.severity || 'Medium').toLowerCase();
+                const dots = document.querySelectorAll('.severity-dot');
+                dots.forEach((dot, idx) => {
+                    dot.classList.remove('active', 'low', 'medium', 'high');
+                    if (severity === 'low' && idx === 0) {
+                        dot.classList.add('active', 'low');
+                    } else if (severity === 'medium' && idx <= 1) {
+                        dot.classList.add('active', idx === 0 ? 'low' : 'medium');
+                    } else if (severity === 'high' && idx <= 2) {
+                        dot.classList.add('active', idx === 0 ? 'low' : idx === 1 ? 'medium' : 'high');
+                    }
+                });
+                
+                document.getElementById('diseaseBadge').textContent = t.diseaseDetected;
+                
+                document.getElementById('care1').textContent = result.causes || '-';
+                document.getElementById('care2').textContent = result.symptoms || '-';
+                document.getElementById('treatment').textContent = result.treatment || '-';
+                document.getElementById('prevention').textContent = result.prevention || '-';
+                
+                const weatherCareItem = document.getElementById('weatherCareItem');
+                if (result.weatherImpact) {
+                    weatherCareItem.style.display = 'block';
+                    document.getElementById('weatherCare').textContent = result.weatherImpact;
+                } else {
+                    weatherCareItem.style.display = 'none';
+                }
+                document.getElementById('forecastCareItem').style.display = 'none';
+                
+                document.getElementById('careItem3').style.display = 'none';
+                document.getElementById('careItem4').style.display = 'none';
+            }
+            
+            setPage('result');
+        }
+
+        function loadRecent() {
+            const container = document.getElementById('recentList');
+            const clearBtn = document.getElementById('clearBtn');
+            const t = texts[config.lang];
+            
+            if (recent.length === 0) {
+                container.innerHTML = `<div class="empty-state" id="emptyRecent"><div class="empty-icon">🌱</div><div>${t.emptyRecent}</div></div>`;
+                clearBtn.style.display = 'none';
+                return;
+            }
+            
+            clearBtn.style.display = 'inline-flex';
+            
+            container.innerHTML = recent.map(item => {
+                const name = config.lang === 'bn' && item.nameBn ? item.nameBn : item.name;
+                const isDisease = item.mode === 'disease';
+                const icon = isDisease ? '🔬' : '🌿';
+                const badgeClass = isDisease ? 'disease' : '';
+                const badgeText = isDisease ? t.modeDisease : t.modeIdentify;
+                
+                return `
+                    <div class="plant-card ${badgeClass}" onclick='restoreResult(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                        <div class="plant-img" style="background: ${isDisease ? 'var(--error-container)' : 'var(--primary-container)'}; color: ${isDisease ? 'var(--error)' : 'var(--primary)'}">
+                            ${icon}
+                        </div>
+                        <div class="plant-info">
+                            <div class="plant-name">${name}</div>
+                            <div class="plant-meta">
+                                <span class="plant-badge ${badgeClass}">${badgeText}</span>
+                                <span>${item.scientific || ''}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function clearRecent() {
+            recent = [];
+            localStorage.removeItem('recent');
+            loadRecent();
+            showToast(config.lang === 'bn' ? 'ইতিহাস মুছে ফেলা হয়েছে' : 'History cleared');
+        }
+
+        function restoreResult(item) {
+            currentImage = item.image;
+            currentResult = item;
+            config.mode = item.mode || 'identify';
+            showResult(item);
+        }
+
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.textContent = msg;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Close modal on outside click
-        document.getElementById('settingsModal').addEventListener('click', function(e) {
-            if(e.target === this) closeSettings();
-        });
+        // Initialize
+        init();
     </script>
 </body>
 </html>
